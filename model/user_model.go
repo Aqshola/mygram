@@ -38,5 +38,9 @@ type UpdateResponse struct {
 	Updated_at time.Time `json:"updated_at"`
 }
 
+type DeleteResponse struct {
+	Message string `json:"message"`
+}
+
 type UserResponse struct {
 }

@@ -11,9 +11,9 @@ import (
 
 type UserService interface {
 	Register(request *model.RegisterRequest) (model.RegisterResponse, error)
-	// Login(request *model.LoginRequest) (model.LoginResponse, error)
-	// UpdateUser(request *model.UpdateRequest) (model.UpdateResponse, error)
-	// DeleteUser(id string) (interface{}, error)
+	Login(request *model.LoginRequest) (model.LoginResponse, error)
+	UpdateUser(id uint, request *model.UpdateRequest) (model.UpdateResponse, error)
+	DeleteUser(id uint) error
 }
 
 type userService struct {
@@ -65,6 +65,69 @@ func (s *userService) Register(request *model.RegisterRequest) (model.RegisterRe
 	}, nil
 }
 
-// func (s *userService) Login(request *model.LoginRequest) (model.LoginResponse, error)
-// func (s *userService) UpdateUser(request *model.UpdateRequest) (model.UpdateResponse, error)
-// func (s *userService) DeleteUser(id string) (interface{}, error)
+func (s *userService) Login(request *model.LoginRequest) (model.LoginResponse, error) {
+	user, err := s.repository.FindByEmail(request.Email)
+
+	if err != nil {
+		return model.LoginResponse{
+			Token: "",
+		}, err
+	}
+
+	comparePass := helpers.ComparePass(request.Password, user.Password)
+	if !comparePass {
+		return model.LoginResponse{
+			Token: "",
+		}, errors.New("wrong password")
+	}
+
+	_token := helpers.GenerateJWT(user.Id, user.Email)
+
+	return model.LoginResponse{
+		Token: _token,
+	}, nil
+
+}
+
+func (s *userService) UpdateUser(id uint, request *model.UpdateRequest) (model.UpdateResponse, error) {
+	user, err := s.repository.FindById(id)
+
+	if err != nil {
+		return model.UpdateResponse{
+			Username: request.Username,
+			Email:    request.Email,
+		}, err
+	}
+
+	user.Email = request.Email
+	user.Username = request.Username
+	user.Updated_at = time.Now()
+
+	updateUser, err := s.repository.Update(user)
+	if err != nil {
+		return model.UpdateResponse{}, err
+	}
+
+	return model.UpdateResponse{
+		Id:         updateUser.Id,
+		Email:      updateUser.Email,
+		Username:   updateUser.Username,
+		Age:        updateUser.Age,
+		Updated_at: updateUser.Updated_at,
+	}, nil
+}
+
+func (s *userService) DeleteUser(id uint) error {
+	_, errUser := s.repository.FindById(id)
+	if errUser != nil {
+		return errUser
+	}
+	errDelete := s.repository.Delete(id)
+
+	if errDelete != nil {
+		return errDelete
+	}
+
+	return nil
+
+}
