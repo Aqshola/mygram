@@ -127,7 +127,7 @@ func (controller *UserHandler) DeleteUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadGateway, response)
 	}
 
-	errDelete := controller.service.DeleteUser(uint(idconvert))
+	resDelete, errDelete := controller.service.DeleteUser(uint(idconvert))
 
 	if errDelete != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errDelete.Error(), nil)
@@ -135,9 +135,7 @@ func (controller *UserHandler) DeleteUser(ctx *gin.Context) {
 		return
 	}
 
-	response := helpers.GenerateApiResponse(http.StatusOK, "Delete success", model.DeleteResponse{
-		Message: "Your account has been successfully deleted",
-	})
+	response := helpers.GenerateApiResponse(http.StatusOK, "Delete success", resDelete)
 
 	ctx.JSON(http.StatusOK, response)
 }

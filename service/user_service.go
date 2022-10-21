@@ -13,7 +13,7 @@ type UserService interface {
 	Register(request *model.RegisterRequest) (model.RegisterResponse, error)
 	Login(request *model.LoginRequest) (model.LoginResponse, error)
 	UpdateUser(id uint, request *model.UpdateRequest) (model.UpdateResponse, error)
-	DeleteUser(id uint) error
+	DeleteUser(id uint) (model.DeleteUserResponse, error)
 }
 
 type userService struct {
@@ -117,17 +117,23 @@ func (s *userService) UpdateUser(id uint, request *model.UpdateRequest) (model.U
 	}, nil
 }
 
-func (s *userService) DeleteUser(id uint) error {
+func (s *userService) DeleteUser(id uint) (model.DeleteUserResponse, error) {
 	_, errUser := s.repository.FindById(id)
 	if errUser != nil {
-		return errUser
+		return model.DeleteUserResponse{
+			Message: "Error while delete",
+		}, errUser
 	}
 	errDelete := s.repository.Delete(id)
 
 	if errDelete != nil {
-		return errDelete
+		return model.DeleteUserResponse{
+			Message: "Error while delete",
+		}, errDelete
 	}
 
-	return nil
+	return model.DeleteUserResponse{
+		Message: "Error while delete",
+	}, nil
 
 }
