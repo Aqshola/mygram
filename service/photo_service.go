@@ -69,10 +69,8 @@ func (s *photoService) GetAllPhoto() ([]model.GetAllPhotoResponse, error) {
 			User_id:    v.User_Id,
 			Created_at: v.Created_at,
 			Updated_at: v.Updated_at,
-			User: struct {
-				Email    string `json:"email"`
-				Username string `json:"username"`
-			}{
+			User: model.UserResponse{
+				Id:       v.User.Id,
 				Email:    v.User.Email,
 				Username: v.User.Username,
 			},
@@ -117,6 +115,14 @@ func (s *photoService) DeletePhoto(id uint) (model.DeletePhotoResponse, error) {
 		return model.DeletePhotoResponse{
 			Message: "Error while delete",
 		}, errGet
+	}
+
+	errDelete := s.repository.Delete(id)
+
+	if errDelete != nil {
+		return model.DeletePhotoResponse{
+			Message: "Fail to delete photo",
+		}, errDelete
 	}
 	return model.DeletePhotoResponse{
 		Message: "Your photo has been successfully deleted!",

@@ -25,10 +25,7 @@ type GetAllPhotoResponse struct {
 	User_id    uint      `json:"user_id"`
 	Created_at time.Time `json:"created_at"`
 	Updated_at time.Time `json:"updated_at"`
-	User       struct {
-		Email    string `json:"email"`
-		Username string `json:"username"`
-	} `json:"user"`
+	User       UserResponse
 }
 
 type UpdatePhotoRequest struct {
@@ -48,4 +45,12 @@ type UpdatePhotoResponse struct {
 
 type DeletePhotoResponse struct {
 	Message string `json:"message"`
+}
+
+type PhotoResponse struct {
+	Id        uint   `json:"id"`
+	Title     string `json:"title"`
+	Caption   string `json:"caption"`
+	Photo_url string `json:"photo_url"`
+	User_id   uint   `json:"user_id"`
 }

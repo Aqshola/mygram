@@ -32,9 +32,21 @@ func main() {
 	photoService := service.NewPhotoService(photoRepo)
 	photoHandler := handlers.NewPhotoController(photoService)
 
+	//INIT COMMENT
+	commentRepo := repository.NewCommentRepostiory(idb)
+	commentService := service.NewCommentService(commentRepo)
+	commentHandler := handlers.NewCommentController(commentService)
+
+	//INIT SOCIAL
+	socialRepo := repository.NewSocialRepository(idb)
+	socialService := service.NewSocialService(socialRepo)
+	socialHandler := handlers.NewSocialHandler(socialService)
+
 	//ROUTE
 	userHandler.Route(router)
 	photoHandler.Route(router)
+	commentHandler.Route(router)
+	socialHandler.Route(router)
 
 	router.Run(":8080")
 	fmt.Println("Server Running")

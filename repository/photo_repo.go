@@ -11,19 +11,19 @@ type PhotoRepository interface {
 	Insert(photo *entity.Photo) (*entity.Photo, error)
 	Update(Photo *entity.Photo) (*entity.Photo, error)
 	FindAll() (*[]entity.Photo, error)
-	Delete(id uint) error
 	FindById(id uint) (*entity.Photo, error)
+	Delete(id uint) error
 }
 
-type repository struct {
+type photoRepository struct {
 	db *gorm.DB
 }
 
-func NewPhotoRepository(db *gorm.DB) *repository {
-	return &repository{db}
+func NewPhotoRepository(db *gorm.DB) *photoRepository {
+	return &photoRepository{db}
 }
 
-func (r *repository) FindById(id uint) (*entity.Photo, error) {
+func (r *photoRepository) FindById(id uint) (*entity.Photo, error) {
 	var photo entity.Photo
 	err := r.db.Table("photos").Where("id = ?", id).Take(&photo).Error
 
@@ -37,7 +37,7 @@ func (r *repository) FindById(id uint) (*entity.Photo, error) {
 	return &photo, err
 }
 
-func (r *repository) Insert(photo *entity.Photo) (*entity.Photo, error) {
+func (r *photoRepository) Insert(photo *entity.Photo) (*entity.Photo, error) {
 	err := r.db.Table("photos").Create(&photo).Error
 
 	if err != nil {
@@ -47,7 +47,7 @@ func (r *repository) Insert(photo *entity.Photo) (*entity.Photo, error) {
 	return photo, nil
 }
 
-func (r *repository) Update(photo *entity.Photo) (*entity.Photo, error) {
+func (r *photoRepository) Update(photo *entity.Photo) (*entity.Photo, error) {
 	err := r.db.Table("photos").Preload("users").Where("id = ?", &photo.Id).Updates(&photo).Error
 
 	if err != nil {
@@ -57,7 +57,7 @@ func (r *repository) Update(photo *entity.Photo) (*entity.Photo, error) {
 	return photo, nil
 }
 
-func (r *repository) FindAll() (*[]entity.Photo, error) {
+func (r *photoRepository) FindAll() (*[]entity.Photo, error) {
 	var listPhoto []entity.Photo
 	err := r.db.Table("photos").Preload("User").Find(&listPhoto).Error
 
@@ -68,8 +68,8 @@ func (r *repository) FindAll() (*[]entity.Photo, error) {
 	return &listPhoto, nil
 }
 
-func (r *repository) Delete(id uint) error {
-	err := r.db.Table("photos").Where("id = ?", id).Error
+func (r *photoRepository) Delete(id uint) error {
+	err := r.db.Table("photos").Where("id = ?", id).Delete(entity.Photo{}).Error
 
 	if err != nil {
 		return err
