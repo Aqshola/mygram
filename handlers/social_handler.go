@@ -24,8 +24,8 @@ func (controller *SocialHandler) Route(route *gin.Engine) {
 	social := route.Group("/socialmedias").Use(middlewares.Authentication())
 	social.POST("/", controller.CreateSocial)
 	social.GET("/", controller.GetAllSocial)
-	social.PUT("/:socialMediaId", controller.UpdateSocial)
-	social.DELETE("/:socialMediaId", controller.DeleteSocial)
+	social.Use(middlewares.Authorization("social_media", "socialMediaId")).PUT("/:socialMediaId", controller.UpdateSocial)
+	social.Use(middlewares.Authorization("social_media", "socialMediaId")).DELETE("/:socialMediaId", controller.DeleteSocial)
 }
 
 func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
@@ -38,6 +38,7 @@ func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
 	if errValid != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	res, errCreate := controller.service.CreateSocial(userId, &createSocialRequest)
@@ -58,23 +59,27 @@ func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 func (controller *SocialHandler) GetAllSocial(ctx *gin.Context) {
-	res, err := controller.service.GetAllSocial()
+	userData := ctx.MustGet("userData").(jwt.MapClaims)
+	userId := uint(userData["id"].(float64))
+
+	res, err := controller.service.GetAllSocial(userId)
 
 	if err != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, err.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 	response := helpers.GenerateApiResponse(http.StatusOK, "Success get all comment", res)
 	ctx.JSON(http.StatusOK, response)
 }
 
 func (controller *SocialHandler) UpdateSocial(ctx *gin.Context) {
-
 	ids := ctx.Param("socialMediaId")
 	idconvert, errconvert := strconv.Atoi(ids)
 	if errconvert != nil {
 		response := helpers.GenerateApiResponse(http.StatusBadGateway, "Unable to parse id", nil)
 		ctx.JSON(http.StatusBadGateway, response)
+		return
 	}
 
 	var updateSocialRequest model.UpdateSocialRequest
@@ -84,6 +89,7 @@ func (controller *SocialHandler) UpdateSocial(ctx *gin.Context) {
 	if errValid != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	res, errUpdate := controller.service.UpdateSocial(uint(idconvert), &updateSocialRequest)
@@ -104,6 +110,7 @@ func (controller *SocialHandler) DeleteSocial(ctx *gin.Context) {
 	if errconvert != nil {
 		response := helpers.GenerateApiResponse(http.StatusBadGateway, "Unable to parse id", nil)
 		ctx.JSON(http.StatusBadGateway, response)
+		return
 	}
 
 	res, errDelete := controller.service.DeleteSocial(uint(idconvert))

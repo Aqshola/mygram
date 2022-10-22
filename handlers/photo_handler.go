@@ -24,8 +24,8 @@ func (controller *PhotoHandler) Route(route *gin.Engine) {
 	photo := route.Group("/photos").Use(middlewares.Authentication())
 	photo.POST("/", controller.AddPhoto)
 	photo.GET("/", controller.GetAllPhoto)
-	photo.PUT("/:photoId", controller.UpdatePhoto)
-	photo.DELETE("/:photoId", controller.DeletePhoto)
+	photo.Use(middlewares.Authorization("photos", "photoId")).PUT("/:photoId", controller.UpdatePhoto)
+	photo.Use(middlewares.Authorization("photos", "photoId")).DELETE("/:photoId", controller.DeletePhoto)
 }
 
 func (controller *PhotoHandler) AddPhoto(ctx *gin.Context) {
@@ -39,6 +39,7 @@ func (controller *PhotoHandler) AddPhoto(ctx *gin.Context) {
 	if errValid != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	res, errAdd := controller.service.AddPhoto(userId, &addPhotoRequest)
@@ -67,8 +68,8 @@ func (controller *PhotoHandler) GetAllPhoto(ctx *gin.Context) {
 }
 
 func (controller *PhotoHandler) UpdatePhoto(ctx *gin.Context) {
-	ids := ctx.Param("photoId")
 
+	ids := ctx.Param("photoId")
 	idconvert, errconvert := strconv.Atoi(ids)
 	if errconvert != nil {
 		response := helpers.GenerateApiResponse(http.StatusBadGateway, "Unable to parse id", nil)

@@ -33,7 +33,7 @@ func (r *userRepository) FindById(id uint) (*entity.User, error) {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &user, errors.New("user not found")
 		}
-		return &user, errors.New("unable to delete")
+		return &user, errors.New("error find user")
 	}
 
 	return &user, nil
@@ -67,6 +67,7 @@ func (r *userRepository) FindByEmail(email string) (*entity.User, error) {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &user, errors.New("user not found")
 		}
+		return &user, errors.New("error find user")
 	}
 	return &user, nil
 }

@@ -1,25 +1,28 @@
 package service
 
 import (
+	"errors"
 	"mygram/entity"
 	"mygram/model"
 	"mygram/repository"
+	"net/url"
 	"time"
 )
 
 type SocialService interface {
 	CreateSocial(userId uint, request *model.CreateSocialRequest) (model.CreateSocialResponse, error)
-	GetAllSocial() ([]model.GetAllSocialResponse, error)
+	GetAllSocial(userId uint) ([]model.GetAllSocialResponse, error)
 	UpdateSocial(id uint, request *model.UpdateSocialRequest) (model.UpdateSocialResponse, error)
 	DeleteSocial(id uint) (model.DeleteSocialResponse, error)
 }
 
 type socialService struct {
-	repository repository.SocialRepository
+	repository     repository.SocialRepository
+	userRepository repository.UserRepository
 }
 
-func NewSocialService(repository repository.SocialRepository) *socialService {
-	return &socialService{repository: repository}
+func NewSocialService(repository repository.SocialRepository, userRepository repository.UserRepository) *socialService {
+	return &socialService{repository: repository, userRepository: userRepository}
 }
 
 func (r *socialService) CreateSocial(userId uint, request *model.CreateSocialRequest) (model.CreateSocialResponse, error) {
@@ -30,6 +33,11 @@ func (r *socialService) CreateSocial(userId uint, request *model.CreateSocialReq
 		Created_at:       time.Now(),
 	}
 
+	_, errUrl := url.ParseRequestURI(social.Social_Media_Url)
+
+	if errUrl != nil {
+		return model.CreateSocialResponse{}, errors.New("invalid social url")
+	}
 	res, err := r.repository.Insert(&social)
 	if err != nil {
 		return model.CreateSocialResponse{}, err
@@ -43,10 +51,10 @@ func (r *socialService) CreateSocial(userId uint, request *model.CreateSocialReq
 		Created_at:       res.Created_at,
 	}, nil
 }
-func (r *socialService) GetAllSocial() ([]model.GetAllSocialResponse, error) {
+func (r *socialService) GetAllSocial(userId uint) ([]model.GetAllSocialResponse, error) {
 	var listSocial []model.GetAllSocialResponse = []model.GetAllSocialResponse{}
 
-	res, err := r.repository.FindAll()
+	res, err := r.repository.FindAllByUser(userId)
 	if err != nil {
 		return listSocial, err
 	}
@@ -75,6 +83,12 @@ func (r *socialService) UpdateSocial(id uint, request *model.UpdateSocialRequest
 		return model.UpdateSocialResponse{}, errGet
 	}
 
+	_, errUrl := url.ParseRequestURI(request.Social_media_url)
+
+	if errUrl != nil {
+		return model.UpdateSocialResponse{}, errors.New("Invalid social url")
+	}
+
 	social.Name = request.Name
 	social.Social_Media_Url = request.Social_media_url
 
@@ -94,14 +108,6 @@ func (r *socialService) UpdateSocial(id uint, request *model.UpdateSocialRequest
 
 }
 func (r *socialService) DeleteSocial(id uint) (model.DeleteSocialResponse, error) {
-	_, errGet := r.repository.FindById(id)
-
-	if errGet != nil {
-		return model.DeleteSocialResponse{
-			Message: "Error while delete social",
-		}, errGet
-	}
-
 	errDelete := r.repository.Delete(id)
 
 	if errDelete != nil {

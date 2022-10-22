@@ -43,7 +43,11 @@ func (r *commentRepository) Update(comment *entity.Comment) (*entity.Comment, er
 }
 func (r *commentRepository) FindAll() (*[]entity.Comment, error) {
 	var listComment []entity.Comment
-	err := r.db.Table("comments").Preload("User").Preload("Photo").Find(&listComment).Error
+	err := r.db.Table("comments").Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id, username, email")
+	}).Preload("Photo", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id, title, caption, photo_url, user_id")
+	}).Find(&listComment).Error
 
 	if err != nil {
 		return &listComment, err

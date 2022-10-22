@@ -9,20 +9,28 @@ import (
 
 type CommentService interface {
 	CreateComment(userId uint, request *model.CreateCommentRequest) (model.CreateCommentResponse, error)
-	UpdateComment(id uint, request *model.UpdateCommentRequest) (model.UpdateCommentResponse, error)
 	GetAllComment() ([]model.GetAllCommentResponse, error)
+	UpdateComment(id uint, request *model.UpdateCommentRequest) (model.UpdateCommentResponse, error)
 	DeleteComment(id uint) (model.DeleteCommentResponse, error)
 }
 
 type commentService struct {
-	repository repository.CommentRepository
+	repository      repository.CommentRepository
+	photoRepository repository.PhotoRepository
+	userRepository  repository.UserRepository
 }
 
-func NewCommentService(repository repository.CommentRepository) *commentService {
-	return &commentService{repository: repository}
+func NewCommentService(repository repository.CommentRepository, userRepository repository.UserRepository, photoRepository repository.PhotoRepository) *commentService {
+	return &commentService{repository: repository, userRepository: userRepository, photoRepository: photoRepository}
 }
 
 func (s *commentService) CreateComment(userId uint, request *model.CreateCommentRequest) (model.CreateCommentResponse, error) {
+
+	_, errCheck := s.photoRepository.FindById(request.Photo_id)
+
+	if errCheck != nil {
+		return model.CreateCommentResponse{}, errCheck
+	}
 	var comment entity.Comment = entity.Comment{
 		Message:    request.Message,
 		Photo_Id:   request.Photo_id,
@@ -48,17 +56,17 @@ func (s *commentService) CreateComment(userId uint, request *model.CreateComment
 
 }
 func (s *commentService) UpdateComment(id uint, request *model.UpdateCommentRequest) (model.UpdateCommentResponse, error) {
-	comment, errDetail := s.repository.FindById(id)
-	comment.Message = request.Message
 
+	comment, errDetail := s.repository.FindById(id)
 	if errDetail != nil {
 		return model.UpdateCommentResponse{
 			Message: request.Message,
 		}, errDetail
 	}
 
-	res, errUpdate := s.repository.Update(comment)
+	comment.Message = request.Message
 
+	res, errUpdate := s.repository.Update(comment)
 	if errUpdate != nil {
 		return model.UpdateCommentResponse{
 			Message: request.Message,
@@ -109,6 +117,7 @@ func (s *commentService) GetAllComment() ([]model.GetAllCommentResponse, error) 
 
 }
 func (s *commentService) DeleteComment(id uint) (model.DeleteCommentResponse, error) {
+
 	_, errDetail := s.repository.FindById(id)
 
 	if errDetail != nil {
@@ -116,6 +125,7 @@ func (s *commentService) DeleteComment(id uint) (model.DeleteCommentResponse, er
 			Message: "Error while delete",
 		}, errDetail
 	}
+
 	err := s.repository.Delete(id)
 
 	if err != nil {

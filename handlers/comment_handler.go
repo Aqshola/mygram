@@ -24,8 +24,8 @@ func (controller *CommentHandler) Route(route *gin.Engine) {
 	comment := route.Group("/comments").Use(middlewares.Authentication())
 	comment.POST("/", controller.CreateComment)
 	comment.GET("/", controller.GetAllComment)
-	comment.PUT("/:commentId", controller.UpdateComment)
-	comment.DELETE("/:commentId", controller.DeleteComment)
+	comment.Use(middlewares.Authorization("comments", "commentId")).PUT("/:commentId", controller.UpdateComment)
+	comment.Use(middlewares.Authorization("comments", "commentId")).DELETE("/:commentId", controller.DeleteComment)
 
 }
 
@@ -39,6 +39,7 @@ func (controller *CommentHandler) CreateComment(ctx *gin.Context) {
 	if errValid != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	res, errCreate := controller.service.CreateComment(userId, &createCommentRequest)
@@ -72,6 +73,7 @@ func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
 	if errconvert != nil {
 		response := helpers.GenerateApiResponse(http.StatusBadGateway, "Unable to parse id", nil)
 		ctx.JSON(http.StatusBadGateway, response)
+		return
 	}
 
 	ctx.ShouldBindJSON(&updateCommentRequest)
@@ -79,6 +81,7 @@ func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
 	if errValid != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	res, errDetail := controller.service.UpdateComment(uint(idconvert), &updateCommentRequest)
@@ -93,11 +96,13 @@ func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
 }
 
 func (controller *CommentHandler) DeleteComment(ctx *gin.Context) {
+
 	ids := ctx.Param("commentId")
 	idconvert, errconvert := strconv.Atoi(ids)
 	if errconvert != nil {
 		response := helpers.GenerateApiResponse(http.StatusBadGateway, "Unable to parse id", nil)
 		ctx.JSON(http.StatusBadGateway, response)
+		return
 	}
 
 	res, err := controller.service.DeleteComment(uint(idconvert))

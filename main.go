@@ -29,17 +29,17 @@ func main() {
 
 	//INIT PHOTO
 	photoRepo := repository.NewPhotoRepository(idb)
-	photoService := service.NewPhotoService(photoRepo)
+	photoService := service.NewPhotoService(photoRepo, userRepo)
 	photoHandler := handlers.NewPhotoController(photoService)
 
 	//INIT COMMENT
 	commentRepo := repository.NewCommentRepostiory(idb)
-	commentService := service.NewCommentService(commentRepo)
+	commentService := service.NewCommentService(commentRepo, userRepo, photoRepo)
 	commentHandler := handlers.NewCommentController(commentService)
 
 	//INIT SOCIAL
 	socialRepo := repository.NewSocialRepository(idb)
-	socialService := service.NewSocialService(socialRepo)
+	socialService := service.NewSocialService(socialRepo, userRepo)
 	socialHandler := handlers.NewSocialHandler(socialService)
 
 	//ROUTE

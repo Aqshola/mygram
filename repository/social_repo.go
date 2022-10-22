@@ -10,7 +10,7 @@ import (
 type SocialRepository interface {
 	Insert(social *entity.SocialMedia) (*entity.SocialMedia, error)
 	Update(social *entity.SocialMedia) (*entity.SocialMedia, error)
-	FindAll() (*[]entity.SocialMedia, error)
+	FindAllByUser(userId uint) (*[]entity.SocialMedia, error)
 	FindById(id uint) (*entity.SocialMedia, error)
 	Delete(id uint) error
 }
@@ -43,9 +43,9 @@ func (r *socialRepository) Update(social *entity.SocialMedia) (*entity.SocialMed
 	return social, nil
 }
 
-func (r *socialRepository) FindAll() (*[]entity.SocialMedia, error) {
+func (r *socialRepository) FindAllByUser(userId uint) (*[]entity.SocialMedia, error) {
 	var listSocial []entity.SocialMedia
-	err := r.db.Table("social_media").Preload("User").Find(&listSocial).Error
+	err := r.db.Table("social_media").Where("user_id = ?", userId).Preload("User").Find(&listSocial).Error
 
 	if err != nil {
 		return &listSocial, err
@@ -61,9 +61,9 @@ func (r *socialRepository) FindById(id uint) (*entity.SocialMedia, error) {
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return &social, errors.New("comment not found")
+			return &social, errors.New("social not found")
 		}
-		return &social, errors.New("error while get comment")
+		return &social, errors.New("error while get social")
 	}
 	return &social, nil
 }

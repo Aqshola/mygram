@@ -6,9 +6,9 @@ import (
 	"mygram/model"
 	"mygram/service"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type UserHandler struct {
@@ -23,8 +23,8 @@ func (controller *UserHandler) Route(route *gin.Engine) {
 	user := route.Group("/users")
 	user.POST("/register", controller.Register)
 	user.POST("/login", controller.Login)
-	user.Use(middlewares.Authentication()).PUT("/:userId", controller.UpdateUser)
-	user.Use(middlewares.Authentication()).DELETE("/:userId", controller.DeleteUser)
+	user.Use(middlewares.Authentication()).PUT("/", controller.UpdateUser)
+	user.Use(middlewares.Authentication()).DELETE("/", controller.DeleteUser)
 
 }
 
@@ -73,13 +73,8 @@ func (controller *UserHandler) Login(ctx *gin.Context) {
 
 func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 	var updateRequest model.UpdateRequest
-	ids := ctx.Param("userId")
-
-	idconvert, errconvert := strconv.Atoi(ids)
-	if errconvert != nil {
-		response := helpers.GenerateApiResponse(http.StatusBadGateway, "Unable to parse id", nil)
-		ctx.JSON(http.StatusBadGateway, response)
-	}
+	userData := ctx.MustGet("userData").(jwt.MapClaims)
+	userId := uint(userData["id"].(float64))
 
 	ctx.ShouldBindJSON(&updateRequest)
 
@@ -89,7 +84,7 @@ func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
-	res, errUpdate := controller.service.UpdateUser(uint(idconvert), &updateRequest)
+	res, errUpdate := controller.service.UpdateUser(userId, &updateRequest)
 	if errUpdate != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errUpdate.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
@@ -100,15 +95,10 @@ func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 }
 
 func (controller *UserHandler) DeleteUser(ctx *gin.Context) {
-	ids := ctx.Param("userId")
+	userData := ctx.MustGet("userData").(jwt.MapClaims)
+	userId := uint(userData["id"].(float64))
 
-	idconvert, errconvert := strconv.Atoi(ids)
-	if errconvert != nil {
-		response := helpers.GenerateApiResponse(http.StatusBadGateway, "Unable to parse id", nil)
-		ctx.JSON(http.StatusBadGateway, response)
-	}
-
-	resDelete, errDelete := controller.service.DeleteUser(uint(idconvert))
+	resDelete, errDelete := controller.service.DeleteUser(uint(userId))
 
 	if errDelete != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errDelete.Error(), nil)

@@ -59,7 +59,9 @@ func (r *photoRepository) Update(photo *entity.Photo) (*entity.Photo, error) {
 
 func (r *photoRepository) FindAll() (*[]entity.Photo, error) {
 	var listPhoto []entity.Photo
-	err := r.db.Table("photos").Preload("User").Find(&listPhoto).Error
+	err := r.db.Table("photos").Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id,email,username")
+	}).Find(&listPhoto).Error
 
 	if err != nil {
 		return &listPhoto, err

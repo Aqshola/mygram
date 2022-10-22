@@ -76,9 +76,7 @@ func (s *userService) Login(request *model.LoginRequest) (model.LoginResponse, e
 
 	comparePass := helpers.ComparePass(request.Password, user.Password)
 	if !comparePass {
-		return model.LoginResponse{
-			Token: "",
-		}, errors.New("wrong password")
+		return model.LoginResponse{}, errors.New("wrong password")
 	}
 
 	_token := helpers.GenerateJWT(user.Id, user.Email)
@@ -93,10 +91,7 @@ func (s *userService) UpdateUser(id uint, request *model.UpdateRequest) (model.U
 	user, err := s.repository.FindById(id)
 
 	if err != nil {
-		return model.UpdateResponse{
-			Username: request.Username,
-			Email:    request.Email,
-		}, err
+		return model.UpdateResponse{}, err
 	}
 
 	user.Email = request.Email
@@ -133,7 +128,7 @@ func (s *userService) DeleteUser(id uint) (model.DeleteUserResponse, error) {
 	}
 
 	return model.DeleteUserResponse{
-		Message: "Error while delete",
+		Message: "Your account has been successfully deleted",
 	}, nil
 
 }
