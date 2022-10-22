@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
 )
 
@@ -36,16 +35,10 @@ func (controller *CommentHandler) CreateComment(ctx *gin.Context) {
 	userId := uint(userData["id"].(float64))
 	ctx.ShouldBindJSON(&createCommentRequest)
 
-	valid, trans := helpers.Valid()
-	err := valid.Struct(createCommentRequest)
-
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	errValid := helpers.CheckValid(createCommentRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errCreate := controller.service.CreateComment(userId, &createCommentRequest)
@@ -82,16 +75,10 @@ func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
 	}
 
 	ctx.ShouldBindJSON(&updateCommentRequest)
-	valid, trans := helpers.Valid()
-	err := valid.Struct(updateCommentRequest)
-
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	errValid := helpers.CheckValid(updateCommentRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errDetail := controller.service.UpdateComment(uint(idconvert), &updateCommentRequest)

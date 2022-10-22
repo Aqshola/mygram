@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 type UserHandler struct {
@@ -33,19 +32,13 @@ func (controller *UserHandler) Register(ctx *gin.Context) {
 	var registerRequest model.RegisterRequest
 
 	ctx.ShouldBindJSON(&registerRequest)
+	errValid := helpers.CheckValid(registerRequest)
 
-	valid, trans := helpers.Valid()
-	err := valid.Struct(registerRequest)
-
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
-
 	res, errRegister := controller.service.Register(&registerRequest)
 	if errRegister != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errRegister.Error(), nil)
@@ -61,20 +54,13 @@ func (controller *UserHandler) Login(ctx *gin.Context) {
 	var loginRequest model.LoginRequest
 
 	ctx.ShouldBindJSON(&loginRequest)
-	valid, trans := helpers.Valid()
-	err := valid.Struct(loginRequest)
-
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	errValid := helpers.CheckValid(loginRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errLogin := controller.service.Login(&loginRequest)
-
 	if errLogin != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnauthorized, errLogin.Error(), res)
 		ctx.JSON(http.StatusUnauthorized, response)
@@ -96,16 +82,11 @@ func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 	}
 
 	ctx.ShouldBindJSON(&updateRequest)
-	valid, trans := helpers.Valid()
-	err := valid.Struct(updateRequest)
 
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	errValid := helpers.CheckValid(updateRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errUpdate := controller.service.UpdateUser(uint(idconvert), &updateRequest)

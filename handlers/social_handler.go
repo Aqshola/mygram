@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
 )
 
@@ -35,17 +34,10 @@ func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
 	userId := uint(userData["id"].(float64))
 
 	ctx.ShouldBindJSON(&createSocialRequest)
-
-	valid, trans := helpers.Valid()
-	err := valid.Struct(createSocialRequest)
-
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	errValid := helpers.CheckValid(createSocialRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errCreate := controller.service.CreateSocial(userId, &createSocialRequest)
@@ -87,15 +79,11 @@ func (controller *SocialHandler) UpdateSocial(ctx *gin.Context) {
 
 	var updateSocialRequest model.UpdateSocialRequest
 	ctx.ShouldBindJSON(&updateSocialRequest)
-	valid, trans := helpers.Valid()
-	err := valid.Struct(updateSocialRequest)
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+
+	errValid := helpers.CheckValid(updateSocialRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errUpdate := controller.service.UpdateSocial(uint(idconvert), &updateSocialRequest)

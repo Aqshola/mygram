@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
 )
 
@@ -36,16 +35,10 @@ func (controller *PhotoHandler) AddPhoto(ctx *gin.Context) {
 
 	ctx.ShouldBindJSON(&addPhotoRequest)
 
-	valid, trans := helpers.Valid()
-	err := valid.Struct(addPhotoRequest)
-
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	errValid := helpers.CheckValid(addPhotoRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errAdd := controller.service.AddPhoto(userId, &addPhotoRequest)
@@ -70,7 +63,7 @@ func (controller *PhotoHandler) GetAllPhoto(ctx *gin.Context) {
 
 	response := helpers.GenerateApiResponse(http.StatusOK, "Success get all photo", res)
 	ctx.JSON(http.StatusOK, response)
-	return
+
 }
 
 func (controller *PhotoHandler) UpdatePhoto(ctx *gin.Context) {
@@ -86,16 +79,10 @@ func (controller *PhotoHandler) UpdatePhoto(ctx *gin.Context) {
 
 	ctx.ShouldBindJSON(&updatePhotoRequest)
 
-	valid, trans := helpers.Valid()
-	err := valid.Struct(updatePhotoRequest)
-
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		for _, e := range errs {
-			response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, e.Translate(trans), nil)
-			ctx.JSON(http.StatusUnprocessableEntity, response)
-			return
-		}
+	errValid := helpers.CheckValid(updatePhotoRequest)
+	if errValid != nil {
+		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
 	}
 
 	res, errUpdate := controller.service.UpdatePhoto(uint(idconvert), &updatePhotoRequest)

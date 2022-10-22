@@ -16,7 +16,7 @@ func GenerateJWT(id uint, email string) string {
 	claims := jwt.MapClaims{
 		"id":        id,
 		"email":     email,
-		"ExpiresAt": time.Now().AddDate(0, 0, 7).Unix(),
+		"expiredAt": time.Now().AddDate(0, 0, 7).Unix(),
 	}
 
 	parseToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

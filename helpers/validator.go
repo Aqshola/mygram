@@ -1,6 +1,8 @@
 package helpers
 
 import (
+	"errors"
+
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
@@ -23,4 +25,17 @@ func Valid() (*validator.Validate, ut.Translator) {
 	en_translations.RegisterDefaultTranslations(validate, trans)
 
 	return validate, trans
+}
+
+func CheckValid(structCheck interface{}) error {
+	valid, trans := Valid()
+	err := valid.Struct(structCheck)
+
+	if err != nil {
+		errs := err.(validator.ValidationErrors)
+		for _, e := range errs {
+			return errors.New(e.Translate(trans))
+		}
+	}
+	return nil
 }
