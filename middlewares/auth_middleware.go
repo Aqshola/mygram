@@ -24,7 +24,9 @@ func Authentication() gin.HandlerFunc {
 			return
 		}
 
-		expiredAt := verifyToken.(jwt.MapClaims)["expiredAt"]
+		payload := verifyToken.(jwt.MapClaims)
+		expiredAt := payload["expiredAt"]
+		userId := payload["id"]
 
 		if expiredAt == nil {
 			response := helpers.GenerateApiResponse(http.StatusUnauthorized, "Invalid Token", nil)
@@ -35,6 +37,24 @@ func Authentication() gin.HandlerFunc {
 		if time.Now().Unix() > int64(expiredAt.(float64)) {
 			response := helpers.GenerateApiResponse(http.StatusUnauthorized, "Token Expired", nil)
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
+		}
+
+		var tempCheck struct {
+			Id uint `json:"id"`
+		}
+
+		errUser := config.CallDB().Table("users").Select("id").Where("id = ?", uint(userId.(float64))).Take(&tempCheck).Error
+
+		if errUser != nil {
+			if errors.Is(errUser, gorm.ErrRecordNotFound) {
+				response := helpers.GenerateApiResponse(http.StatusUnauthorized, "User Invalid", nil)
+				ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
+				return
+			}
+
+			response := helpers.GenerateApiResponse(http.StatusInternalServerError, "Internal Server Error", nil)
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, response)
 			return
 		}
 
@@ -61,7 +81,7 @@ func Authorization(service string, idparam string) gin.HandlerFunc {
 			User_id uint `json:"user_id"`
 		}
 
-		errService := config.StartDB().Table(service).Select("user_id").Where("id = ?", uint(idconvert)).Take(&serviceUserId).Error
+		errService := config.CallDB().Table(service).Select("user_id").Where("id = ?", uint(idconvert)).Take(&serviceUserId).Error
 		fmt.Println(serviceUserId, userId, idconvert, userId, errService)
 		if errService != nil && errors.Is(errService, gorm.ErrRecordNotFound) {
 			response := helpers.GenerateApiResponse(http.StatusNotFound, "Content not found", nil)

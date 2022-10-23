@@ -37,3 +37,7 @@ func StartDB() *gorm.DB {
 
 	return db
 }
+
+func CallDB() *gorm.DB {
+	return db
+}
