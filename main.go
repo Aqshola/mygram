@@ -8,6 +8,7 @@ import (
 	"mygram/handlers"
 	"mygram/repository"
 	"mygram/service"
+	"os"
 
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -26,10 +27,18 @@ import (
 // @name Authorization
 
 func main() {
-	err := godotenv.Load(".env")
 
-	if err != nil {
-		log.Fatal("Unable to load env")
+	if os.Getenv("APP_ENV") == "prodcution" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Unable to load production env")
+		}
+	} else {
+		err := godotenv.Load(".env")
+
+		if err != nil {
+			log.Fatal("Unable to load development env")
+		}
 	}
 
 	idb := config.StartDB()
