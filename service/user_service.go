@@ -2,18 +2,18 @@ package service
 
 import (
 	"errors"
+	"mygram/dto"
 	"mygram/entity"
 	"mygram/helpers"
-	"mygram/model"
 	"mygram/repository"
 	"time"
 )
 
 type UserService interface {
-	Register(request *model.RegisterRequest) (model.RegisterResponse, error)
-	Login(request *model.LoginRequest) (model.LoginResponse, error)
-	UpdateUser(id uint, request *model.UpdateRequest) (model.UpdateResponse, error)
-	DeleteUser(id uint) (model.DeleteUserResponse, error)
+	Register(request *dto.RegisterRequest) (dto.RegisterResponse, error)
+	Login(request *dto.LoginRequest) (dto.LoginResponse, error)
+	UpdateUser(id uint, request *dto.UpdateRequest) (dto.UpdateResponse, error)
+	DeleteUser(id uint) (dto.DeleteUserResponse, error)
 }
 
 type userService struct {
@@ -24,7 +24,7 @@ func NewUserService(repository repository.UserRepository) *userService {
 	return &userService{repository}
 }
 
-func (s *userService) Register(request *model.RegisterRequest) (model.RegisterResponse, error) {
+func (s *userService) Register(request *dto.RegisterRequest) (dto.RegisterResponse, error) {
 	user := entity.User{
 		Age:        request.Age,
 		Email:      request.Email,
@@ -37,27 +37,27 @@ func (s *userService) Register(request *model.RegisterRequest) (model.RegisterRe
 	isUsernameExist := s.repository.IsUsernameExist(user.Username)
 
 	if isEmailExist {
-		return model.RegisterResponse{
+		return dto.RegisterResponse{
 			Email: request.Email,
 		}, errors.New("email already used")
 	}
 
 	if isUsernameExist {
-		return model.RegisterResponse{
+		return dto.RegisterResponse{
 			Username: request.Username,
 		}, errors.New("username already used")
 	}
 
 	newUser, errorInsert := s.repository.Insert(&user)
 	if errorInsert != nil {
-		return model.RegisterResponse{
+		return dto.RegisterResponse{
 			Age:      request.Age,
 			Email:    request.Email,
 			Username: request.Username,
 		}, errorInsert
 	}
 
-	return model.RegisterResponse{
+	return dto.RegisterResponse{
 		Email:    newUser.Email,
 		Age:      newUser.Age,
 		Id:       newUser.Id,
@@ -65,33 +65,33 @@ func (s *userService) Register(request *model.RegisterRequest) (model.RegisterRe
 	}, nil
 }
 
-func (s *userService) Login(request *model.LoginRequest) (model.LoginResponse, error) {
+func (s *userService) Login(request *dto.LoginRequest) (dto.LoginResponse, error) {
 	user, err := s.repository.FindByEmail(request.Email)
 
 	if err != nil {
-		return model.LoginResponse{
+		return dto.LoginResponse{
 			Token: "",
 		}, err
 	}
 
 	comparePass := helpers.ComparePass(request.Password, user.Password)
 	if !comparePass {
-		return model.LoginResponse{}, errors.New("wrong password")
+		return dto.LoginResponse{}, errors.New("wrong password")
 	}
 
 	_token := helpers.GenerateJWT(user.Id, user.Email)
 
-	return model.LoginResponse{
+	return dto.LoginResponse{
 		Token: _token,
 	}, nil
 
 }
 
-func (s *userService) UpdateUser(id uint, request *model.UpdateRequest) (model.UpdateResponse, error) {
+func (s *userService) UpdateUser(id uint, request *dto.UpdateRequest) (dto.UpdateResponse, error) {
 	user, err := s.repository.FindById(id)
 
 	if err != nil {
-		return model.UpdateResponse{}, err
+		return dto.UpdateResponse{}, err
 	}
 
 	user.Email = request.Email
@@ -100,10 +100,10 @@ func (s *userService) UpdateUser(id uint, request *model.UpdateRequest) (model.U
 
 	updateUser, err := s.repository.Update(user)
 	if err != nil {
-		return model.UpdateResponse{}, err
+		return dto.UpdateResponse{}, err
 	}
 
-	return model.UpdateResponse{
+	return dto.UpdateResponse{
 		Id:         updateUser.Id,
 		Email:      updateUser.Email,
 		Username:   updateUser.Username,
@@ -112,22 +112,22 @@ func (s *userService) UpdateUser(id uint, request *model.UpdateRequest) (model.U
 	}, nil
 }
 
-func (s *userService) DeleteUser(id uint) (model.DeleteUserResponse, error) {
+func (s *userService) DeleteUser(id uint) (dto.DeleteUserResponse, error) {
 	_, errUser := s.repository.FindById(id)
 	if errUser != nil {
-		return model.DeleteUserResponse{
+		return dto.DeleteUserResponse{
 			Message: "Error while delete",
 		}, errUser
 	}
 	errDelete := s.repository.Delete(id)
 
 	if errDelete != nil {
-		return model.DeleteUserResponse{
+		return dto.DeleteUserResponse{
 			Message: "Error while delete",
 		}, errDelete
 	}
 
-	return model.DeleteUserResponse{
+	return dto.DeleteUserResponse{
 		Message: "Your account has been successfully deleted",
 	}, nil
 

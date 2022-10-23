@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"mygram/dto"
 	"mygram/helpers"
 	"mygram/middlewares"
-	"mygram/model"
 	"mygram/service"
 	"net/http"
 	"strconv"
@@ -34,12 +34,12 @@ func (controller *PhotoHandler) Route(route *gin.Engine) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Param addPhotoRequest body model.AddPhotoRequest true "Add photo body"
-// @Success 201 {object}  helpers.ApiResponse{data=model.AddPhotoResponse} "Success"
+// @Param addPhotoRequest body dto.AddPhotoRequest true "Add photo body"
+// @Success 201 {object}  helpers.ApiResponse{data=dto.AddPhotoResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /photos/ [post]
 func (controller *PhotoHandler) AddPhoto(ctx *gin.Context) {
-	var addPhotoRequest model.AddPhotoRequest
+	var addPhotoRequest dto.AddPhotoRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
 
@@ -68,7 +68,7 @@ func (controller *PhotoHandler) AddPhoto(ctx *gin.Context) {
 // @Tags         Photo
 // @Security Authorization
 // @Produce json
-// @Success 200 {object}  helpers.ApiResponse{data=[]model.GetAllPhotoResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=[]dto.GetAllPhotoResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /photos/ [get]
 func (controller *PhotoHandler) GetAllPhoto(ctx *gin.Context) {
@@ -91,8 +91,8 @@ func (controller *PhotoHandler) GetAllPhoto(ctx *gin.Context) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Param updatePhotoRequest body model.UpdatePhotoRequest true "Update photo body"
-// @Success 200 {object}  helpers.ApiResponse{data=model.UpdatePhotoResponse} "Success"
+// @Param updatePhotoRequest body dto.UpdatePhotoRequest true "Update photo body"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.UpdatePhotoResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Param photoId path uint true "Photo Id"
 // @Router /photos/{photoId} [put]
@@ -105,7 +105,7 @@ func (controller *PhotoHandler) UpdatePhoto(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadGateway, response)
 	}
 
-	var updatePhotoRequest model.UpdatePhotoRequest
+	var updatePhotoRequest dto.UpdatePhotoRequest
 
 	ctx.ShouldBindJSON(&updatePhotoRequest)
 
@@ -133,7 +133,7 @@ func (controller *PhotoHandler) UpdatePhoto(ctx *gin.Context) {
 // @Tags         Photo
 // @Security Authorization
 // @Produce json
-// @Success 200 {object}  helpers.ApiResponse{data=model.DeletePhotoResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.DeletePhotoResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Param photoId path uint true "Photo Id"
 // @Router /photos/{photoId} [delete]

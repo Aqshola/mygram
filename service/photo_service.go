@@ -2,19 +2,19 @@ package service
 
 import (
 	"errors"
+	"mygram/dto"
 	"mygram/entity"
 	"mygram/helpers"
-	"mygram/model"
 	"mygram/repository"
 	"path/filepath"
 	"time"
 )
 
 type PhotoService interface {
-	AddPhoto(userId uint, request *model.AddPhotoRequest) (model.AddPhotoResponse, error)
-	GetAllPhoto() ([]model.GetAllPhotoResponse, error)
-	UpdatePhoto(id uint, request *model.UpdatePhotoRequest) (model.UpdatePhotoResponse, error)
-	DeletePhoto(id uint) (model.DeletePhotoResponse, error)
+	AddPhoto(userId uint, request *dto.AddPhotoRequest) (dto.AddPhotoResponse, error)
+	GetAllPhoto() ([]dto.GetAllPhotoResponse, error)
+	UpdatePhoto(id uint, request *dto.UpdatePhotoRequest) (dto.UpdatePhotoResponse, error)
+	DeletePhoto(id uint) (dto.DeletePhotoResponse, error)
 }
 
 type photoService struct {
@@ -26,7 +26,7 @@ func NewPhotoService(repository repository.PhotoRepository, userRepository repos
 	return &photoService{repository: repository, userRepository: userRepository}
 }
 
-func (s *photoService) AddPhoto(userId uint, request *model.AddPhotoRequest) (model.AddPhotoResponse, error) {
+func (s *photoService) AddPhoto(userId uint, request *dto.AddPhotoRequest) (dto.AddPhotoResponse, error) {
 
 	var photo entity.Photo = entity.Photo{
 		Title:      request.Title,
@@ -39,7 +39,7 @@ func (s *photoService) AddPhoto(userId uint, request *model.AddPhotoRequest) (mo
 	_, errCheckUser := s.userRepository.FindById(photo.User_Id)
 
 	if errCheckUser != nil {
-		return model.AddPhotoResponse{
+		return dto.AddPhotoResponse{
 			Title:     request.Title,
 			Caption:   request.Caption,
 			Photo_url: request.Photo_url,
@@ -52,15 +52,15 @@ func (s *photoService) AddPhoto(userId uint, request *model.AddPhotoRequest) (mo
 	photo.Photo_url = parsedUrl
 
 	if errUrl != nil && (fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg") {
-		return model.AddPhotoResponse{}, errors.New("invalid photo url")
+		return dto.AddPhotoResponse{}, errors.New("invalid photo url")
 	}
 
 	res, err := s.repository.Insert(&photo)
 	if err != nil {
-		return model.AddPhotoResponse{}, errors.New("error while add photo")
+		return dto.AddPhotoResponse{}, errors.New("error while add photo")
 	}
 
-	return model.AddPhotoResponse{
+	return dto.AddPhotoResponse{
 		Id:         res.Id,
 		Title:      res.Title,
 		Caption:    res.Caption,
@@ -70,8 +70,8 @@ func (s *photoService) AddPhoto(userId uint, request *model.AddPhotoRequest) (mo
 	}, nil
 }
 
-func (s *photoService) GetAllPhoto() ([]model.GetAllPhotoResponse, error) {
-	var listPhoto []model.GetAllPhotoResponse = []model.GetAllPhotoResponse{}
+func (s *photoService) GetAllPhoto() ([]dto.GetAllPhotoResponse, error) {
+	var listPhoto []dto.GetAllPhotoResponse = []dto.GetAllPhotoResponse{}
 
 	res, errGet := s.repository.FindAll()
 	if errGet != nil {
@@ -79,7 +79,7 @@ func (s *photoService) GetAllPhoto() ([]model.GetAllPhotoResponse, error) {
 	}
 
 	for _, v := range *res {
-		listPhoto = append(listPhoto, model.GetAllPhotoResponse{
+		listPhoto = append(listPhoto, dto.GetAllPhotoResponse{
 			Id:         v.Id,
 			Title:      v.Title,
 			Caption:    v.Caption,
@@ -87,7 +87,7 @@ func (s *photoService) GetAllPhoto() ([]model.GetAllPhotoResponse, error) {
 			User_id:    v.User_Id,
 			Created_at: v.Created_at,
 			Updated_at: v.Updated_at,
-			User: model.UserResponse{
+			User: dto.UserResponse{
 				Id:       v.User.Id,
 				Email:    v.User.Email,
 				Username: v.User.Username,
@@ -99,7 +99,7 @@ func (s *photoService) GetAllPhoto() ([]model.GetAllPhotoResponse, error) {
 	return listPhoto, nil
 }
 
-func (s *photoService) UpdatePhoto(id uint, request *model.UpdatePhotoRequest) (model.UpdatePhotoResponse, error) {
+func (s *photoService) UpdatePhoto(id uint, request *dto.UpdatePhotoRequest) (dto.UpdatePhotoResponse, error) {
 	photo, errGet := s.repository.FindById(id)
 
 	fileExt := filepath.Ext(request.Photo_url)
@@ -107,11 +107,11 @@ func (s *photoService) UpdatePhoto(id uint, request *model.UpdatePhotoRequest) (
 	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Photo_url)
 
 	if errUrl != nil && (fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg") {
-		return model.UpdatePhotoResponse{}, errors.New("invalid photo url")
+		return dto.UpdatePhotoResponse{}, errors.New("invalid photo url")
 	}
 
 	if errGet != nil {
-		return model.UpdatePhotoResponse{}, errGet
+		return dto.UpdatePhotoResponse{}, errGet
 	}
 
 	photo.Title = request.Title
@@ -121,10 +121,10 @@ func (s *photoService) UpdatePhoto(id uint, request *model.UpdatePhotoRequest) (
 
 	photoUpdate, errUpdate := s.repository.Update(photo)
 	if errUpdate != nil {
-		return model.UpdatePhotoResponse{}, errUpdate
+		return dto.UpdatePhotoResponse{}, errUpdate
 	}
 
-	return model.UpdatePhotoResponse{
+	return dto.UpdatePhotoResponse{
 		Id:         photo.Id,
 		Title:      photoUpdate.Title,
 		Caption:    photoUpdate.Caption,
@@ -135,16 +135,16 @@ func (s *photoService) UpdatePhoto(id uint, request *model.UpdatePhotoRequest) (
 
 }
 
-func (s *photoService) DeletePhoto(id uint) (model.DeletePhotoResponse, error) {
+func (s *photoService) DeletePhoto(id uint) (dto.DeletePhotoResponse, error) {
 
 	errDelete := s.repository.Delete(id)
 
 	if errDelete != nil {
-		return model.DeletePhotoResponse{
+		return dto.DeletePhotoResponse{
 			Message: "Fail to delete photo",
 		}, errDelete
 	}
-	return model.DeletePhotoResponse{
+	return dto.DeletePhotoResponse{
 		Message: "Your photo has been successfully deleted!",
 	}, nil
 }

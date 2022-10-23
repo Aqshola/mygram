@@ -1,19 +1,6 @@
 basePath: /
 definitions:
-  helpers.ApiInfo:
-    properties:
-      message:
-        type: string
-      status:
-        type: integer
-    type: object
-  helpers.ApiResponse:
-    properties:
-      data: {}
-      info:
-        $ref: '#/definitions/helpers.ApiInfo'
-    type: object
-  model.AddPhotoRequest:
+  dto.AddPhotoRequest:
     properties:
       caption:
         maxLength: 191
@@ -29,7 +16,7 @@ definitions:
     - photo_url
     - title
     type: object
-  model.AddPhotoResponse:
+  dto.AddPhotoResponse:
     properties:
       caption:
         type: string
@@ -44,7 +31,7 @@ definitions:
       user_id:
         type: integer
     type: object
-  model.CreateCommentRequest:
+  dto.CreateCommentRequest:
     properties:
       message:
         maxLength: 191
@@ -55,7 +42,7 @@ definitions:
     - message
     - photo_id
     type: object
-  model.CreateCommentResponse:
+  dto.CreateCommentResponse:
     properties:
       created_at:
         type: string
@@ -66,7 +53,7 @@ definitions:
       photo_id:
         type: integer
     type: object
-  model.CreateSocialRequest:
+  dto.CreateSocialRequest:
     properties:
       name:
         maxLength: 191
@@ -78,7 +65,7 @@ definitions:
     - name
     - social_media_url
     type: object
-  model.CreateSocialResponse:
+  dto.CreateSocialResponse:
     properties:
       created_at:
         type: string
@@ -91,27 +78,27 @@ definitions:
       user_id:
         type: integer
     type: object
-  model.DeleteCommentResponse:
+  dto.DeleteCommentResponse:
     properties:
       message:
         type: string
     type: object
-  model.DeletePhotoResponse:
+  dto.DeletePhotoResponse:
     properties:
       message:
         type: string
     type: object
-  model.DeleteSocialResponse:
+  dto.DeleteSocialResponse:
     properties:
       message:
         type: string
     type: object
-  model.DeleteUserResponse:
+  dto.DeleteUserResponse:
     properties:
       message:
         type: string
     type: object
-  model.GetAllCommentResponse:
+  dto.GetAllCommentResponse:
     properties:
       created_at:
         type: string
@@ -120,17 +107,17 @@ definitions:
       message:
         type: string
       photo:
-        $ref: '#/definitions/model.PhotoResponse'
+        $ref: '#/definitions/dto.PhotoResponse'
       photo_id:
         type: integer
       updated_at:
         type: string
       user:
-        $ref: '#/definitions/model.UserResponse'
+        $ref: '#/definitions/dto.UserResponse'
       user_id:
         type: integer
     type: object
-  model.GetAllPhotoResponse:
+  dto.GetAllPhotoResponse:
     properties:
       caption:
         type: string
@@ -145,11 +132,11 @@ definitions:
       updated_at:
         type: string
       user:
-        $ref: '#/definitions/model.UserResponse'
+        $ref: '#/definitions/dto.UserResponse'
       user_id:
         type: integer
     type: object
-  model.GetAllSocialResponse:
+  dto.GetAllSocialResponse:
     properties:
       created_at:
         type: string
@@ -160,11 +147,11 @@ definitions:
       social_media_url:
         type: string
       user:
-        $ref: '#/definitions/model.UserResponse'
+        $ref: '#/definitions/dto.UserResponse'
       user_id:
         type: integer
     type: object
-  model.LoginRequest:
+  dto.LoginRequest:
     properties:
       email:
         type: string
@@ -175,12 +162,12 @@ definitions:
     - email
     - password
     type: object
-  model.LoginResponse:
+  dto.LoginResponse:
     properties:
       token:
         type: string
     type: object
-  model.PhotoResponse:
+  dto.PhotoResponse:
     properties:
       caption:
         type: string
@@ -193,7 +180,7 @@ definitions:
       user_id:
         type: integer
     type: object
-  model.RegisterRequest:
+  dto.RegisterRequest:
     properties:
       age:
         maximum: 100
@@ -214,7 +201,7 @@ definitions:
     - password
     - username
     type: object
-  model.RegisterResponse:
+  dto.RegisterResponse:
     properties:
       age:
         type: integer
@@ -225,7 +212,7 @@ definitions:
       username:
         type: string
     type: object
-  model.UpdateCommentRequest:
+  dto.UpdateCommentRequest:
     properties:
       message:
         maxLength: 191
@@ -233,7 +220,7 @@ definitions:
     required:
     - message
     type: object
-  model.UpdateCommentResponse:
+  dto.UpdateCommentResponse:
     properties:
       id:
         type: integer
@@ -246,7 +233,7 @@ definitions:
       user_id:
         type: integer
     type: object
-  model.UpdatePhotoRequest:
+  dto.UpdatePhotoRequest:
     properties:
       caption:
         maxLength: 191
@@ -262,7 +249,7 @@ definitions:
     - photo_url
     - title
     type: object
-  model.UpdatePhotoResponse:
+  dto.UpdatePhotoResponse:
     properties:
       caption:
         type: string
@@ -277,7 +264,7 @@ definitions:
       user_id:
         type: integer
     type: object
-  model.UpdateRequest:
+  dto.UpdateRequest:
     properties:
       email:
         maxLength: 191
@@ -289,7 +276,7 @@ definitions:
     - email
     - username
     type: object
-  model.UpdateResponse:
+  dto.UpdateResponse:
     properties:
       age:
         type: integer
@@ -302,7 +289,7 @@ definitions:
       username:
         type: string
     type: object
-  model.UpdateSocialRequest:
+  dto.UpdateSocialRequest:
     properties:
       name:
         maxLength: 191
@@ -314,7 +301,7 @@ definitions:
     - name
     - social_media_url
     type: object
-  model.UpdateSocialResponse:
+  dto.UpdateSocialResponse:
     properties:
       id:
         type: integer
@@ -327,7 +314,7 @@ definitions:
       user_id:
         type: integer
     type: object
-  model.UserResponse:
+  dto.UserResponse:
     properties:
       email:
         type: string
@@ -335,6 +322,19 @@ definitions:
         type: integer
       username:
         type: string
+    type: object
+  helpers.ApiInfo:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  helpers.ApiResponse:
+    properties:
+      data: {}
+      info:
+        $ref: '#/definitions/helpers.ApiInfo'
     type: object
 host: localhost:8080
 info:
@@ -356,7 +356,7 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/model.GetAllCommentResponse'
+                    $ref: '#/definitions/dto.GetAllCommentResponse'
                   type: array
               type: object
         "422":
@@ -378,7 +378,7 @@ paths:
         name: createCommentRequest
         required: true
         schema:
-          $ref: '#/definitions/model.CreateCommentRequest'
+          $ref: '#/definitions/dto.CreateCommentRequest'
       produces:
       - application/json
       responses:
@@ -389,7 +389,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.CreateCommentResponse'
+                  $ref: '#/definitions/dto.CreateCommentResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -419,7 +419,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.DeleteCommentResponse'
+                  $ref: '#/definitions/dto.DeleteCommentResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -440,7 +440,7 @@ paths:
         name: updateCommentRequest
         required: true
         schema:
-          $ref: '#/definitions/model.UpdateCommentRequest'
+          $ref: '#/definitions/dto.UpdateCommentRequest'
       - description: Comment Id
         in: path
         name: commentId
@@ -456,7 +456,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.UpdateCommentResponse'
+                  $ref: '#/definitions/dto.UpdateCommentResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -481,7 +481,7 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/model.GetAllPhotoResponse'
+                    $ref: '#/definitions/dto.GetAllPhotoResponse'
                   type: array
               type: object
         "422":
@@ -503,7 +503,7 @@ paths:
         name: addPhotoRequest
         required: true
         schema:
-          $ref: '#/definitions/model.AddPhotoRequest'
+          $ref: '#/definitions/dto.AddPhotoRequest'
       produces:
       - application/json
       responses:
@@ -514,7 +514,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.AddPhotoResponse'
+                  $ref: '#/definitions/dto.AddPhotoResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -544,7 +544,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.DeletePhotoResponse'
+                  $ref: '#/definitions/dto.DeletePhotoResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -565,7 +565,7 @@ paths:
         name: updatePhotoRequest
         required: true
         schema:
-          $ref: '#/definitions/model.UpdatePhotoRequest'
+          $ref: '#/definitions/dto.UpdatePhotoRequest'
       - description: Photo Id
         in: path
         name: photoId
@@ -581,7 +581,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.UpdatePhotoResponse'
+                  $ref: '#/definitions/dto.UpdatePhotoResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -606,7 +606,7 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/model.GetAllSocialResponse'
+                    $ref: '#/definitions/dto.GetAllSocialResponse'
                   type: array
               type: object
         "422":
@@ -628,7 +628,7 @@ paths:
         name: createSocialRequest
         required: true
         schema:
-          $ref: '#/definitions/model.CreateSocialRequest'
+          $ref: '#/definitions/dto.CreateSocialRequest'
       produces:
       - application/json
       responses:
@@ -639,7 +639,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.CreateSocialResponse'
+                  $ref: '#/definitions/dto.CreateSocialResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -669,7 +669,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.DeleteSocialResponse'
+                  $ref: '#/definitions/dto.DeleteSocialResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -690,7 +690,7 @@ paths:
         name: updateSocialRequest
         required: true
         schema:
-          $ref: '#/definitions/model.UpdateSocialRequest'
+          $ref: '#/definitions/dto.UpdateSocialRequest'
       - description: Social media Id
         in: path
         name: socialMediaId
@@ -706,7 +706,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.UpdateSocialResponse'
+                  $ref: '#/definitions/dto.UpdateSocialResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -732,7 +732,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.DeleteUserResponse'
+                  $ref: '#/definitions/dto.DeleteUserResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -753,7 +753,7 @@ paths:
         name: registerRequest
         required: true
         schema:
-          $ref: '#/definitions/model.UpdateRequest'
+          $ref: '#/definitions/dto.UpdateRequest'
       produces:
       - application/json
       responses:
@@ -764,7 +764,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.UpdateResponse'
+                  $ref: '#/definitions/dto.UpdateResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -786,7 +786,7 @@ paths:
         name: registerRequest
         required: true
         schema:
-          $ref: '#/definitions/model.LoginRequest'
+          $ref: '#/definitions/dto.LoginRequest'
       produces:
       - application/json
       responses:
@@ -797,7 +797,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.LoginResponse'
+                  $ref: '#/definitions/dto.LoginResponse'
               type: object
         "422":
           description: Unprocessable Entity
@@ -817,7 +817,7 @@ paths:
         name: registerRequest
         required: true
         schema:
-          $ref: '#/definitions/model.RegisterRequest'
+          $ref: '#/definitions/dto.RegisterRequest'
       produces:
       - application/json
       responses:
@@ -828,7 +828,7 @@ paths:
             - $ref: '#/definitions/helpers.ApiResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/model.RegisterResponse'
+                  $ref: '#/definitions/dto.RegisterResponse'
               type: object
         "422":
           description: Unprocessable Entity

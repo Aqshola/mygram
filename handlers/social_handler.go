@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"mygram/dto"
 	"mygram/helpers"
 	"mygram/middlewares"
-	"mygram/model"
 	"mygram/service"
 	"net/http"
 	"strconv"
@@ -34,12 +34,12 @@ func (controller *SocialHandler) Route(route *gin.Engine) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Param createSocialRequest body model.CreateSocialRequest true "Create social body"
-// @Success 201 {object}  helpers.ApiResponse{data=model.CreateSocialResponse} "Success"
+// @Param createSocialRequest body dto.CreateSocialRequest true "Create social body"
+// @Success 201 {object}  helpers.ApiResponse{data=dto.CreateSocialResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /socialmedias/ [post]
 func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
-	var createSocialRequest model.CreateSocialRequest
+	var createSocialRequest dto.CreateSocialRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
 
@@ -59,7 +59,7 @@ func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
 		return
 	}
 
-	response := helpers.GenerateApiResponse(http.StatusOK, "Success create social", model.CreateSocialResponse{
+	response := helpers.GenerateApiResponse(http.StatusOK, "Success create social", dto.CreateSocialResponse{
 		Id:               res.Id,
 		Name:             res.Name,
 		Social_media_url: res.Social_media_url,
@@ -74,7 +74,7 @@ func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
 // @Tags         Social
 // @Security Authorization
 // @Produce json
-// @Success 200 {object}  helpers.ApiResponse{data=[]model.GetAllSocialResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=[]dto.GetAllSocialResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /socialmedias/ [get]
 func (controller *SocialHandler) GetAllSocial(ctx *gin.Context) {
@@ -98,8 +98,8 @@ func (controller *SocialHandler) GetAllSocial(ctx *gin.Context) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Param updateSocialRequest body model.UpdateSocialRequest true "Update social body"
-// @Success 200 {object}  helpers.ApiResponse{data=model.UpdateSocialResponse} "Success"
+// @Param updateSocialRequest body dto.UpdateSocialRequest true "Update social body"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.UpdateSocialResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Param socialMediaId path uint true "Social media Id"
 // @Router /socialmedias/{socialMediaId} [put]
@@ -112,7 +112,7 @@ func (controller *SocialHandler) UpdateSocial(ctx *gin.Context) {
 		return
 	}
 
-	var updateSocialRequest model.UpdateSocialRequest
+	var updateSocialRequest dto.UpdateSocialRequest
 	ctx.ShouldBindJSON(&updateSocialRequest)
 
 	errValid := helpers.CheckValid(updateSocialRequest)
@@ -140,7 +140,7 @@ func (controller *SocialHandler) UpdateSocial(ctx *gin.Context) {
 // @Tags         Social
 // @Security Authorization
 // @Produce json
-// @Success 200 {object}  helpers.ApiResponse{data=model.DeleteSocialResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.DeleteSocialResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Param socialMediaId path uint true "Social media Id"
 // @Router /socialmedias/{socialMediaId} [delete]

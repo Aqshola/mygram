@@ -2,18 +2,18 @@ package service
 
 import (
 	"errors"
+	"mygram/dto"
 	"mygram/entity"
 	"mygram/helpers"
-	"mygram/model"
 	"mygram/repository"
 	"time"
 )
 
 type SocialService interface {
-	CreateSocial(userId uint, request *model.CreateSocialRequest) (model.CreateSocialResponse, error)
-	GetAllSocial(userId uint) ([]model.GetAllSocialResponse, error)
-	UpdateSocial(id uint, request *model.UpdateSocialRequest) (model.UpdateSocialResponse, error)
-	DeleteSocial(id uint) (model.DeleteSocialResponse, error)
+	CreateSocial(userId uint, request *dto.CreateSocialRequest) (dto.CreateSocialResponse, error)
+	GetAllSocial(userId uint) ([]dto.GetAllSocialResponse, error)
+	UpdateSocial(id uint, request *dto.UpdateSocialRequest) (dto.UpdateSocialResponse, error)
+	DeleteSocial(id uint) (dto.DeleteSocialResponse, error)
 }
 
 type socialService struct {
@@ -25,7 +25,7 @@ func NewSocialService(repository repository.SocialRepository, userRepository rep
 	return &socialService{repository: repository, userRepository: userRepository}
 }
 
-func (r *socialService) CreateSocial(userId uint, request *model.CreateSocialRequest) (model.CreateSocialResponse, error) {
+func (r *socialService) CreateSocial(userId uint, request *dto.CreateSocialRequest) (dto.CreateSocialResponse, error) {
 	var social entity.SocialMedia = entity.SocialMedia{
 		Name:             request.Name,
 		Social_Media_Url: request.Social_media_url,
@@ -38,14 +38,14 @@ func (r *socialService) CreateSocial(userId uint, request *model.CreateSocialReq
 	social.Social_Media_Url = parsedUrl
 
 	if errUrl != nil {
-		return model.CreateSocialResponse{}, errors.New("invalid social url")
+		return dto.CreateSocialResponse{}, errors.New("invalid social url")
 	}
 	res, err := r.repository.Insert(&social)
 	if err != nil {
-		return model.CreateSocialResponse{}, err
+		return dto.CreateSocialResponse{}, err
 	}
 
-	return model.CreateSocialResponse{
+	return dto.CreateSocialResponse{
 		Id:               res.Id,
 		Name:             res.Name,
 		Social_media_url: res.Social_Media_Url,
@@ -53,8 +53,8 @@ func (r *socialService) CreateSocial(userId uint, request *model.CreateSocialReq
 		Created_at:       res.Created_at,
 	}, nil
 }
-func (r *socialService) GetAllSocial(userId uint) ([]model.GetAllSocialResponse, error) {
-	var listSocial []model.GetAllSocialResponse = []model.GetAllSocialResponse{}
+func (r *socialService) GetAllSocial(userId uint) ([]dto.GetAllSocialResponse, error) {
+	var listSocial []dto.GetAllSocialResponse = []dto.GetAllSocialResponse{}
 
 	res, err := r.repository.FindAllByUser(userId)
 	if err != nil {
@@ -62,13 +62,13 @@ func (r *socialService) GetAllSocial(userId uint) ([]model.GetAllSocialResponse,
 	}
 
 	for _, v := range *res {
-		listSocial = append(listSocial, model.GetAllSocialResponse{
+		listSocial = append(listSocial, dto.GetAllSocialResponse{
 			Id:               v.Id,
 			Name:             v.Name,
 			Social_media_url: v.Social_Media_Url,
 			User_id:          v.User_Id,
 			Created_at:       v.Created_at,
-			User: model.UserResponse{
+			User: dto.UserResponse{
 				Id:       v.User.Id,
 				Email:    v.User.Email,
 				Username: v.User.Username,
@@ -78,17 +78,17 @@ func (r *socialService) GetAllSocial(userId uint) ([]model.GetAllSocialResponse,
 	}
 	return listSocial, nil
 }
-func (r *socialService) UpdateSocial(id uint, request *model.UpdateSocialRequest) (model.UpdateSocialResponse, error) {
+func (r *socialService) UpdateSocial(id uint, request *dto.UpdateSocialRequest) (dto.UpdateSocialResponse, error) {
 	social, errGet := r.repository.FindById(id)
 
 	if errGet != nil {
-		return model.UpdateSocialResponse{}, errGet
+		return dto.UpdateSocialResponse{}, errGet
 	}
 
 	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Social_media_url)
 
 	if errUrl != nil {
-		return model.UpdateSocialResponse{}, errors.New("Invalid social url")
+		return dto.UpdateSocialResponse{}, errors.New("Invalid social url")
 	}
 
 	social.Name = request.Name
@@ -97,10 +97,10 @@ func (r *socialService) UpdateSocial(id uint, request *model.UpdateSocialRequest
 	res, errUpdate := r.repository.Update(social)
 
 	if errUpdate != nil {
-		return model.UpdateSocialResponse{}, errUpdate
+		return dto.UpdateSocialResponse{}, errUpdate
 	}
 
-	return model.UpdateSocialResponse{
+	return dto.UpdateSocialResponse{
 		Id:               res.Id,
 		Name:             res.Name,
 		Social_media_url: res.Social_Media_Url,
@@ -109,16 +109,16 @@ func (r *socialService) UpdateSocial(id uint, request *model.UpdateSocialRequest
 	}, nil
 
 }
-func (r *socialService) DeleteSocial(id uint) (model.DeleteSocialResponse, error) {
+func (r *socialService) DeleteSocial(id uint) (dto.DeleteSocialResponse, error) {
 	errDelete := r.repository.Delete(id)
 
 	if errDelete != nil {
-		return model.DeleteSocialResponse{
+		return dto.DeleteSocialResponse{
 			Message: "Error while delete social",
 		}, errDelete
 	}
 
-	return model.DeleteSocialResponse{
+	return dto.DeleteSocialResponse{
 		Message: "Your social media has been successfully deleted",
 	}, nil
 }

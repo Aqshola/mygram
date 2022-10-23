@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"mygram/dto"
 	"mygram/helpers"
 	"mygram/middlewares"
-	"mygram/model"
 	"mygram/service"
 	"net/http"
 	"strconv"
@@ -35,12 +35,12 @@ func (controller *CommentHandler) Route(route *gin.Engine) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Param createCommentRequest body model.CreateCommentRequest true "Create comment body"
-// @Success 201 {object}  helpers.ApiResponse{data=model.CreateCommentResponse} "Success"
+// @Param createCommentRequest body dto.CreateCommentRequest true "Create comment body"
+// @Success 201 {object}  helpers.ApiResponse{data=dto.CreateCommentResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /comments/ [post]
 func (controller *CommentHandler) CreateComment(ctx *gin.Context) {
-	var createCommentRequest model.CreateCommentRequest
+	var createCommentRequest dto.CreateCommentRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
 	ctx.ShouldBindJSON(&createCommentRequest)
@@ -68,7 +68,7 @@ func (controller *CommentHandler) CreateComment(ctx *gin.Context) {
 // @Tags         Comment
 // @Security Authorization
 // @Produce json
-// @Success 200 {object}  helpers.ApiResponse{data=[]model.GetAllCommentResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=[]dto.GetAllCommentResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /comments/ [get]
 func (controller *CommentHandler) GetAllComment(ctx *gin.Context) {
@@ -90,13 +90,13 @@ func (controller *CommentHandler) GetAllComment(ctx *gin.Context) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Param updateCommentRequest body model.UpdateCommentRequest true "Update comment body"
-// @Success 200 {object}  helpers.ApiResponse{data=model.UpdateCommentResponse} "Success"
+// @Param updateCommentRequest body dto.UpdateCommentRequest true "Update comment body"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.UpdateCommentResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Param commentId path uint true "Comment Id"
 // @Router /comments/{commentId} [put]
 func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
-	var updateCommentRequest model.UpdateCommentRequest
+	var updateCommentRequest dto.UpdateCommentRequest
 	ids := ctx.Param("commentId")
 	idconvert, errconvert := strconv.Atoi(ids)
 	if errconvert != nil {
@@ -129,7 +129,7 @@ func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
 // @Tags         Comment
 // @Security Authorization
 // @Produce json
-// @Success 200 {object}  helpers.ApiResponse{data=model.DeleteCommentResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.DeleteCommentResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Param commentId path uint true "Comment Id"
 // @Router /comments/{commentId} [delete]

@@ -45,7 +45,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.GetAllCommentResponse"
+                                                "$ref": "#/definitions/dto.GetAllCommentResponse"
                                             }
                                         }
                                     }
@@ -85,7 +85,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.CreateCommentRequest"
+                            "$ref": "#/definitions/dto.CreateCommentRequest"
                         }
                     }
                 ],
@@ -101,7 +101,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.CreateCommentResponse"
+                                            "$ref": "#/definitions/dto.CreateCommentResponse"
                                         }
                                     }
                                 }
@@ -142,7 +142,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdateCommentRequest"
+                            "$ref": "#/definitions/dto.UpdateCommentRequest"
                         }
                     },
                     {
@@ -165,7 +165,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdateCommentResponse"
+                                            "$ref": "#/definitions/dto.UpdateCommentResponse"
                                         }
                                     }
                                 }
@@ -215,7 +215,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeleteCommentResponse"
+                                            "$ref": "#/definitions/dto.DeleteCommentResponse"
                                         }
                                     }
                                 }
@@ -260,7 +260,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.GetAllPhotoResponse"
+                                                "$ref": "#/definitions/dto.GetAllPhotoResponse"
                                             }
                                         }
                                     }
@@ -300,7 +300,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.AddPhotoRequest"
+                            "$ref": "#/definitions/dto.AddPhotoRequest"
                         }
                     }
                 ],
@@ -316,7 +316,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.AddPhotoResponse"
+                                            "$ref": "#/definitions/dto.AddPhotoResponse"
                                         }
                                     }
                                 }
@@ -357,7 +357,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdatePhotoRequest"
+                            "$ref": "#/definitions/dto.UpdatePhotoRequest"
                         }
                     },
                     {
@@ -380,7 +380,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdatePhotoResponse"
+                                            "$ref": "#/definitions/dto.UpdatePhotoResponse"
                                         }
                                     }
                                 }
@@ -430,7 +430,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeletePhotoResponse"
+                                            "$ref": "#/definitions/dto.DeletePhotoResponse"
                                         }
                                     }
                                 }
@@ -475,7 +475,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.GetAllSocialResponse"
+                                                "$ref": "#/definitions/dto.GetAllSocialResponse"
                                             }
                                         }
                                     }
@@ -515,7 +515,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.CreateSocialRequest"
+                            "$ref": "#/definitions/dto.CreateSocialRequest"
                         }
                     }
                 ],
@@ -531,7 +531,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.CreateSocialResponse"
+                                            "$ref": "#/definitions/dto.CreateSocialResponse"
                                         }
                                     }
                                 }
@@ -572,7 +572,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdateSocialRequest"
+                            "$ref": "#/definitions/dto.UpdateSocialRequest"
                         }
                     },
                     {
@@ -595,7 +595,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdateSocialResponse"
+                                            "$ref": "#/definitions/dto.UpdateSocialResponse"
                                         }
                                     }
                                 }
@@ -645,7 +645,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeleteSocialResponse"
+                                            "$ref": "#/definitions/dto.DeleteSocialResponse"
                                         }
                                     }
                                 }
@@ -686,7 +686,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdateRequest"
+                            "$ref": "#/definitions/dto.UpdateRequest"
                         }
                     }
                 ],
@@ -702,7 +702,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdateResponse"
+                                            "$ref": "#/definitions/dto.UpdateResponse"
                                         }
                                     }
                                 }
@@ -746,7 +746,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeleteUserResponse"
+                                            "$ref": "#/definitions/dto.DeleteUserResponse"
                                         }
                                     }
                                 }
@@ -782,7 +782,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.LoginRequest"
+                            "$ref": "#/definitions/dto.LoginRequest"
                         }
                     }
                 ],
@@ -798,7 +798,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.LoginResponse"
+                                            "$ref": "#/definitions/dto.LoginResponse"
                                         }
                                     }
                                 }
@@ -834,7 +834,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.RegisterRequest"
+                            "$ref": "#/definitions/dto.RegisterRequest"
                         }
                     }
                 ],
@@ -850,7 +850,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.RegisterResponse"
+                                            "$ref": "#/definitions/dto.RegisterResponse"
                                         }
                                     }
                                 }
@@ -868,27 +868,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "helpers.ApiInfo": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "helpers.ApiResponse": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "info": {
-                    "$ref": "#/definitions/helpers.ApiInfo"
-                }
-            }
-        },
-        "model.AddPhotoRequest": {
+        "dto.AddPhotoRequest": {
             "type": "object",
             "required": [
                 "caption",
@@ -910,7 +890,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.AddPhotoResponse": {
+        "dto.AddPhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -933,7 +913,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.CreateCommentRequest": {
+        "dto.CreateCommentRequest": {
             "type": "object",
             "required": [
                 "message",
@@ -949,7 +929,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.CreateCommentResponse": {
+        "dto.CreateCommentResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -966,7 +946,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.CreateSocialRequest": {
+        "dto.CreateSocialRequest": {
             "type": "object",
             "required": [
                 "name",
@@ -983,7 +963,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.CreateSocialResponse": {
+        "dto.CreateSocialResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1003,7 +983,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.DeleteCommentResponse": {
+        "dto.DeleteCommentResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1011,7 +991,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.DeletePhotoResponse": {
+        "dto.DeletePhotoResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1019,7 +999,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.DeleteSocialResponse": {
+        "dto.DeleteSocialResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1027,7 +1007,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.DeleteUserResponse": {
+        "dto.DeleteUserResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1035,7 +1015,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.GetAllCommentResponse": {
+        "dto.GetAllCommentResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1048,7 +1028,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "photo": {
-                    "$ref": "#/definitions/model.PhotoResponse"
+                    "$ref": "#/definitions/dto.PhotoResponse"
                 },
                 "photo_id": {
                     "type": "integer"
@@ -1057,14 +1037,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.UserResponse"
+                    "$ref": "#/definitions/dto.UserResponse"
                 },
                 "user_id": {
                     "type": "integer"
                 }
             }
         },
-        "model.GetAllPhotoResponse": {
+        "dto.GetAllPhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -1086,14 +1066,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.UserResponse"
+                    "$ref": "#/definitions/dto.UserResponse"
                 },
                 "user_id": {
                     "type": "integer"
                 }
             }
         },
-        "model.GetAllSocialResponse": {
+        "dto.GetAllSocialResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1109,14 +1089,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.UserResponse"
+                    "$ref": "#/definitions/dto.UserResponse"
                 },
                 "user_id": {
                     "type": "integer"
                 }
             }
         },
-        "model.LoginRequest": {
+        "dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1132,7 +1112,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.LoginResponse": {
+        "dto.LoginResponse": {
             "type": "object",
             "properties": {
                 "token": {
@@ -1140,7 +1120,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.PhotoResponse": {
+        "dto.PhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -1160,7 +1140,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.RegisterRequest": {
+        "dto.RegisterRequest": {
             "type": "object",
             "required": [
                 "age",
@@ -1188,7 +1168,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.RegisterResponse": {
+        "dto.RegisterResponse": {
             "type": "object",
             "properties": {
                 "age": {
@@ -1205,7 +1185,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdateCommentRequest": {
+        "dto.UpdateCommentRequest": {
             "type": "object",
             "required": [
                 "message"
@@ -1217,7 +1197,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdateCommentResponse": {
+        "dto.UpdateCommentResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1237,7 +1217,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdatePhotoRequest": {
+        "dto.UpdatePhotoRequest": {
             "type": "object",
             "required": [
                 "caption",
@@ -1259,7 +1239,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdatePhotoResponse": {
+        "dto.UpdatePhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -1282,7 +1262,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdateRequest": {
+        "dto.UpdateRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1299,7 +1279,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdateResponse": {
+        "dto.UpdateResponse": {
             "type": "object",
             "properties": {
                 "age": {
@@ -1319,7 +1299,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdateSocialRequest": {
+        "dto.UpdateSocialRequest": {
             "type": "object",
             "required": [
                 "name",
@@ -1336,7 +1316,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UpdateSocialResponse": {
+        "dto.UpdateSocialResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1356,7 +1336,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.UserResponse": {
+        "dto.UserResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1367,6 +1347,26 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "helpers.ApiInfo": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "helpers.ApiResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "info": {
+                    "$ref": "#/definitions/helpers.ApiInfo"
                 }
             }
         }

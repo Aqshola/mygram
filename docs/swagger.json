@@ -37,7 +37,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.GetAllCommentResponse"
+                                                "$ref": "#/definitions/dto.GetAllCommentResponse"
                                             }
                                         }
                                     }
@@ -77,7 +77,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.CreateCommentRequest"
+                            "$ref": "#/definitions/dto.CreateCommentRequest"
                         }
                     }
                 ],
@@ -93,7 +93,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.CreateCommentResponse"
+                                            "$ref": "#/definitions/dto.CreateCommentResponse"
                                         }
                                     }
                                 }
@@ -134,7 +134,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdateCommentRequest"
+                            "$ref": "#/definitions/dto.UpdateCommentRequest"
                         }
                     },
                     {
@@ -157,7 +157,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdateCommentResponse"
+                                            "$ref": "#/definitions/dto.UpdateCommentResponse"
                                         }
                                     }
                                 }
@@ -207,7 +207,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeleteCommentResponse"
+                                            "$ref": "#/definitions/dto.DeleteCommentResponse"
                                         }
                                     }
                                 }
@@ -252,7 +252,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.GetAllPhotoResponse"
+                                                "$ref": "#/definitions/dto.GetAllPhotoResponse"
                                             }
                                         }
                                     }
@@ -292,7 +292,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.AddPhotoRequest"
+                            "$ref": "#/definitions/dto.AddPhotoRequest"
                         }
                     }
                 ],
@@ -308,7 +308,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.AddPhotoResponse"
+                                            "$ref": "#/definitions/dto.AddPhotoResponse"
                                         }
                                     }
                                 }
@@ -349,7 +349,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdatePhotoRequest"
+                            "$ref": "#/definitions/dto.UpdatePhotoRequest"
                         }
                     },
                     {
@@ -372,7 +372,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdatePhotoResponse"
+                                            "$ref": "#/definitions/dto.UpdatePhotoResponse"
                                         }
                                     }
                                 }
@@ -422,7 +422,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeletePhotoResponse"
+                                            "$ref": "#/definitions/dto.DeletePhotoResponse"
                                         }
                                     }
                                 }
@@ -467,7 +467,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.GetAllSocialResponse"
+                                                "$ref": "#/definitions/dto.GetAllSocialResponse"
                                             }
                                         }
                                     }
@@ -507,7 +507,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.CreateSocialRequest"
+                            "$ref": "#/definitions/dto.CreateSocialRequest"
                         }
                     }
                 ],
@@ -523,7 +523,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.CreateSocialResponse"
+                                            "$ref": "#/definitions/dto.CreateSocialResponse"
                                         }
                                     }
                                 }
@@ -564,7 +564,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdateSocialRequest"
+                            "$ref": "#/definitions/dto.UpdateSocialRequest"
                         }
                     },
                     {
@@ -587,7 +587,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdateSocialResponse"
+                                            "$ref": "#/definitions/dto.UpdateSocialResponse"
                                         }
                                     }
                                 }
@@ -637,7 +637,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeleteSocialResponse"
+                                            "$ref": "#/definitions/dto.DeleteSocialResponse"
                                         }
                                     }
                                 }
@@ -678,7 +678,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.UpdateRequest"
+                            "$ref": "#/definitions/dto.UpdateRequest"
                         }
                     }
                 ],
@@ -694,7 +694,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.UpdateResponse"
+                                            "$ref": "#/definitions/dto.UpdateResponse"
                                         }
                                     }
                                 }
@@ -738,7 +738,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.DeleteUserResponse"
+                                            "$ref": "#/definitions/dto.DeleteUserResponse"
                                         }
                                     }
                                 }
@@ -774,7 +774,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.LoginRequest"
+                            "$ref": "#/definitions/dto.LoginRequest"
                         }
                     }
                 ],
@@ -790,7 +790,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.LoginResponse"
+                                            "$ref": "#/definitions/dto.LoginResponse"
                                         }
                                     }
                                 }
@@ -826,7 +826,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.RegisterRequest"
+                            "$ref": "#/definitions/dto.RegisterRequest"
                         }
                     }
                 ],
@@ -842,7 +842,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.RegisterResponse"
+                                            "$ref": "#/definitions/dto.RegisterResponse"
                                         }
                                     }
                                 }
@@ -860,27 +860,7 @@
         }
     },
     "definitions": {
-        "helpers.ApiInfo": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
-                }
-            }
-        },
-        "helpers.ApiResponse": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "info": {
-                    "$ref": "#/definitions/helpers.ApiInfo"
-                }
-            }
-        },
-        "model.AddPhotoRequest": {
+        "dto.AddPhotoRequest": {
             "type": "object",
             "required": [
                 "caption",
@@ -902,7 +882,7 @@
                 }
             }
         },
-        "model.AddPhotoResponse": {
+        "dto.AddPhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -925,7 +905,7 @@
                 }
             }
         },
-        "model.CreateCommentRequest": {
+        "dto.CreateCommentRequest": {
             "type": "object",
             "required": [
                 "message",
@@ -941,7 +921,7 @@
                 }
             }
         },
-        "model.CreateCommentResponse": {
+        "dto.CreateCommentResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -958,7 +938,7 @@
                 }
             }
         },
-        "model.CreateSocialRequest": {
+        "dto.CreateSocialRequest": {
             "type": "object",
             "required": [
                 "name",
@@ -975,7 +955,7 @@
                 }
             }
         },
-        "model.CreateSocialResponse": {
+        "dto.CreateSocialResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -995,7 +975,7 @@
                 }
             }
         },
-        "model.DeleteCommentResponse": {
+        "dto.DeleteCommentResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1003,7 +983,7 @@
                 }
             }
         },
-        "model.DeletePhotoResponse": {
+        "dto.DeletePhotoResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1011,7 +991,7 @@
                 }
             }
         },
-        "model.DeleteSocialResponse": {
+        "dto.DeleteSocialResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1019,7 +999,7 @@
                 }
             }
         },
-        "model.DeleteUserResponse": {
+        "dto.DeleteUserResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1027,7 +1007,7 @@
                 }
             }
         },
-        "model.GetAllCommentResponse": {
+        "dto.GetAllCommentResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1040,7 +1020,7 @@
                     "type": "string"
                 },
                 "photo": {
-                    "$ref": "#/definitions/model.PhotoResponse"
+                    "$ref": "#/definitions/dto.PhotoResponse"
                 },
                 "photo_id": {
                     "type": "integer"
@@ -1049,14 +1029,14 @@
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.UserResponse"
+                    "$ref": "#/definitions/dto.UserResponse"
                 },
                 "user_id": {
                     "type": "integer"
                 }
             }
         },
-        "model.GetAllPhotoResponse": {
+        "dto.GetAllPhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -1078,14 +1058,14 @@
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.UserResponse"
+                    "$ref": "#/definitions/dto.UserResponse"
                 },
                 "user_id": {
                     "type": "integer"
                 }
             }
         },
-        "model.GetAllSocialResponse": {
+        "dto.GetAllSocialResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1101,14 +1081,14 @@
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.UserResponse"
+                    "$ref": "#/definitions/dto.UserResponse"
                 },
                 "user_id": {
                     "type": "integer"
                 }
             }
         },
-        "model.LoginRequest": {
+        "dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1124,7 +1104,7 @@
                 }
             }
         },
-        "model.LoginResponse": {
+        "dto.LoginResponse": {
             "type": "object",
             "properties": {
                 "token": {
@@ -1132,7 +1112,7 @@
                 }
             }
         },
-        "model.PhotoResponse": {
+        "dto.PhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -1152,7 +1132,7 @@
                 }
             }
         },
-        "model.RegisterRequest": {
+        "dto.RegisterRequest": {
             "type": "object",
             "required": [
                 "age",
@@ -1180,7 +1160,7 @@
                 }
             }
         },
-        "model.RegisterResponse": {
+        "dto.RegisterResponse": {
             "type": "object",
             "properties": {
                 "age": {
@@ -1197,7 +1177,7 @@
                 }
             }
         },
-        "model.UpdateCommentRequest": {
+        "dto.UpdateCommentRequest": {
             "type": "object",
             "required": [
                 "message"
@@ -1209,7 +1189,7 @@
                 }
             }
         },
-        "model.UpdateCommentResponse": {
+        "dto.UpdateCommentResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1229,7 +1209,7 @@
                 }
             }
         },
-        "model.UpdatePhotoRequest": {
+        "dto.UpdatePhotoRequest": {
             "type": "object",
             "required": [
                 "caption",
@@ -1251,7 +1231,7 @@
                 }
             }
         },
-        "model.UpdatePhotoResponse": {
+        "dto.UpdatePhotoResponse": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -1274,7 +1254,7 @@
                 }
             }
         },
-        "model.UpdateRequest": {
+        "dto.UpdateRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1291,7 +1271,7 @@
                 }
             }
         },
-        "model.UpdateResponse": {
+        "dto.UpdateResponse": {
             "type": "object",
             "properties": {
                 "age": {
@@ -1311,7 +1291,7 @@
                 }
             }
         },
-        "model.UpdateSocialRequest": {
+        "dto.UpdateSocialRequest": {
             "type": "object",
             "required": [
                 "name",
@@ -1328,7 +1308,7 @@
                 }
             }
         },
-        "model.UpdateSocialResponse": {
+        "dto.UpdateSocialResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1348,7 +1328,7 @@
                 }
             }
         },
-        "model.UserResponse": {
+        "dto.UserResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1359,6 +1339,26 @@
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "helpers.ApiInfo": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "helpers.ApiResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "info": {
+                    "$ref": "#/definitions/helpers.ApiInfo"
                 }
             }
         }

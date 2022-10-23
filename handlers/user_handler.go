@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"mygram/dto"
 	"mygram/helpers"
 	"mygram/middlewares"
-	"mygram/model"
 	"mygram/service"
 	"net/http"
 
@@ -33,12 +33,12 @@ func (controller *UserHandler) Route(route *gin.Engine) {
 // @Tags         User
 // @Accept json
 // @Produce json
-// @Param registerRequest body model.RegisterRequest true "Register body"
-// @Success 201 {object}  helpers.ApiResponse{data=model.RegisterResponse} "Success"
+// @Param registerRequest body dto.RegisterRequest true "Register body"
+// @Success 201 {object}  helpers.ApiResponse{data=dto.RegisterResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /users/register [post]
 func (controller *UserHandler) Register(ctx *gin.Context) {
-	var registerRequest model.RegisterRequest
+	var registerRequest dto.RegisterRequest
 
 	ctx.ShouldBindJSON(&registerRequest)
 	errValid := helpers.CheckValid(registerRequest)
@@ -64,12 +64,12 @@ func (controller *UserHandler) Register(ctx *gin.Context) {
 // @Tags         User
 // @Accept json
 // @Produce json
-// @Param registerRequest body model.LoginRequest true "Login body"
-// @Success 200 {object}  helpers.ApiResponse{data=model.LoginResponse} "Success"
+// @Param registerRequest body dto.LoginRequest true "Login body"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.LoginResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /users/login [post]
 func (controller *UserHandler) Login(ctx *gin.Context) {
-	var loginRequest model.LoginRequest
+	var loginRequest dto.LoginRequest
 
 	ctx.ShouldBindJSON(&loginRequest)
 	errValid := helpers.CheckValid(loginRequest)
@@ -95,12 +95,12 @@ func (controller *UserHandler) Login(ctx *gin.Context) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Param registerRequest body model.UpdateRequest true "Login body"
-// @Success 200 {object}  helpers.ApiResponse{data=model.UpdateResponse} "Success"
+// @Param registerRequest body dto.UpdateRequest true "Login body"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.UpdateResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /users/ [put]
 func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
-	var updateRequest model.UpdateRequest
+	var updateRequest dto.UpdateRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
 
@@ -128,7 +128,7 @@ func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Success 200 {object}  helpers.ApiResponse{data=model.DeleteUserResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=dto.DeleteUserResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /users/ [delete]
 func (controller *UserHandler) DeleteUser(ctx *gin.Context) {
