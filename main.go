@@ -32,6 +32,8 @@ func main() {
 	PORT := "9000"
 	if os.Getenv("APP_ENV") == "production" {
 		PORT = os.Getenv("PORT")
+		SWAGGER_HOST := os.Getenv("RAILWAY_STATIC_URL")
+		docs.SwaggerInfo.Host = SWAGGER_HOST
 	} else {
 		err := godotenv.Load()
 		if err != nil {
@@ -39,7 +41,6 @@ func main() {
 		}
 	}
 
-	docs.SwaggerInfo.Host = "localhost:" + PORT
 	idb := config.StartDB()
 	router := gin.Default()
 
