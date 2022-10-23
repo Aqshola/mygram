@@ -29,7 +29,7 @@ func StartDB() *gorm.DB {
 	}
 
 	fmt.Println("Database connected")
-	if os.Getenv("APP_ENV") == "prodcution" {
+	if os.Getenv("APP_ENV") == "production" {
 		db.AutoMigrate(entity.User{}, entity.Photo{}, entity.SocialMedia{}, entity.Comment{})
 	} else {
 		db.Debug().AutoMigrate(entity.User{}, entity.Photo{}, entity.SocialMedia{}, entity.Comment{})

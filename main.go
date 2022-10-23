@@ -28,8 +28,10 @@ import (
 
 func main() {
 
-	if os.Getenv("APP_ENV") == "prodcution" {
+	PORT := "8080"
+	if os.Getenv("APP_ENV") == "production" {
 		err := godotenv.Load()
+		PORT = os.Getenv("PORT")
 		if err != nil {
 			log.Fatal("Unable to load production env")
 		}
@@ -71,6 +73,6 @@ func main() {
 	socialHandler.Route(router)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	router.Run(":8080")
+	router.Run(":" + PORT)
 	fmt.Println("Server Running")
 }
