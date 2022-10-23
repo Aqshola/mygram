@@ -74,5 +74,5 @@ func main() {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	router.Run(":" + PORT)
-	fmt.Println("Server Running")
+	fmt.Println("Server Running in PORT", PORT)
 }
