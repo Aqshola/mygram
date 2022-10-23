@@ -1,0 +1,225 @@
+basePath: /
+definitions:
+  helpers.ApiInfo:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  helpers.ApiResponse:
+    properties:
+      data: {}
+      info:
+        $ref: '#/definitions/helpers.ApiInfo'
+    type: object
+  model.DeleteUserResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  model.RegisterRequest:
+    properties:
+      age:
+        maximum: 100
+        minimum: 8
+        type: integer
+      email:
+        maxLength: 191
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        maxLength: 10
+        type: string
+    required:
+    - age
+    - email
+    - password
+    - username
+    type: object
+  model.RegisterResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  model.UpdateRequest:
+    properties:
+      email:
+        maxLength: 191
+        type: string
+      username:
+        maxLength: 10
+        type: string
+    required:
+    - email
+    - username
+    type: object
+  model.UpdateResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  title: MyGram Example API
+  version: "1.0"
+paths:
+  /users/:
+    delete:
+      consumes:
+      - application/json
+      description: Delete User
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeleteUserResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Delete User
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Update User Data
+      parameters:
+      - description: Login body
+        in: body
+        name: registerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdateResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Update User
+      tags:
+      - User
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user
+      parameters:
+      - description: Login body
+        in: body
+        name: registerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LoginResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      summary: Login
+      tags:
+      - User
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register new user
+      parameters:
+      - description: Register body
+        in: body
+        name: registerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RegisterResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      summary: Register User
+      tags:
+      - User
+securityDefinitions:
+  Authorization:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -20,6 +20,7 @@ func Authentication() gin.HandlerFunc {
 		if err != nil {
 			response := helpers.GenerateApiResponse(http.StatusUnauthorized, err.Error(), nil)
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
 		}
 
 		expiredAt := verifyToken.(jwt.MapClaims)["expiredAt"]
@@ -27,11 +28,13 @@ func Authentication() gin.HandlerFunc {
 		if expiredAt == nil {
 			response := helpers.GenerateApiResponse(http.StatusUnauthorized, "Invalid Token", nil)
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
 		}
 
 		if time.Now().Unix() > int64(expiredAt.(float64)) {
 			response := helpers.GenerateApiResponse(http.StatusUnauthorized, "Token Expired", nil)
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
 		}
 
 		ctx.Set("userData", verifyToken)

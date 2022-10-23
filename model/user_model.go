@@ -4,7 +4,7 @@ import "time"
 
 type LoginRequest struct {
 	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=6"`
+	Password string `json:"password" validate:"required,min=6" `
 }
 
 type LoginResponse struct {
@@ -19,9 +19,9 @@ type RegisterRequest struct {
 }
 
 type RegisterResponse struct {
-	Age      int    `json:"age"`
+	Age      int    `json:"age" `
 	Email    string `json:"email"`
-	Id       uint   `json:"id"`
+	Id       uint   `json:"id" `
 	Username string `json:"username"`
 }
 

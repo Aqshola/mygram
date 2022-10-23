@@ -28,6 +28,15 @@ func (controller *UserHandler) Route(route *gin.Engine) {
 
 }
 
+// @Summary      Register User
+// @Description Register new user
+// @Tags         User
+// @Accept json
+// @Produce json
+// @Param registerRequest body model.RegisterRequest true "Register body"
+// @Success 201 {object}  helpers.ApiResponse{data=model.RegisterResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /users/register [post]
 func (controller *UserHandler) Register(ctx *gin.Context) {
 	var registerRequest model.RegisterRequest
 
@@ -46,10 +55,19 @@ func (controller *UserHandler) Register(ctx *gin.Context) {
 		return
 	}
 
-	response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, "Success Register", res)
+	response := helpers.GenerateApiResponse(http.StatusOK, "Success Register", res)
 	ctx.JSON(http.StatusCreated, response)
 }
 
+// @Summary      Login
+// @Description Login user
+// @Tags         User
+// @Accept json
+// @Produce json
+// @Param registerRequest body model.LoginRequest true "Login body"
+// @Success 201 {object}  helpers.ApiResponse{data=model.LoginResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /users/login [post]
 func (controller *UserHandler) Login(ctx *gin.Context) {
 	var loginRequest model.LoginRequest
 
@@ -71,6 +89,16 @@ func (controller *UserHandler) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
+// @Summary     Update User
+// @Description Update User Data
+// @Tags         User
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Param registerRequest body model.UpdateRequest true "Login body"
+// @Success 201 {object}  helpers.ApiResponse{data=model.UpdateResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /users/ [put]
 func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 	var updateRequest model.UpdateRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
@@ -94,6 +122,15 @@ func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
+// @Summary     Delete User
+// @Description Delete User
+// @Tags         User
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Success 201 {object}  helpers.ApiResponse{data=model.DeleteUserResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /users/ [delete]
 func (controller *UserHandler) DeleteUser(ctx *gin.Context) {
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))

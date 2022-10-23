@@ -4,13 +4,26 @@ import (
 	"fmt"
 	"log"
 	"mygram/config"
+	_ "mygram/docs"
 	"mygram/handlers"
 	"mygram/repository"
 	"mygram/service"
 
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
+
+// @title           MyGram Example API
+// @version         1.0
+// @host      localhost:8080
+// @BasePath  /
+
+// @securitydefinitions.apikey Authorization
+// @in header
+// @name Authorization
 
 func main() {
 	err := godotenv.Load(".env")
@@ -48,6 +61,7 @@ func main() {
 	commentHandler.Route(router)
 	socialHandler.Route(router)
 
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	router.Run(":8080")
 	fmt.Println("Server Running")
 }
