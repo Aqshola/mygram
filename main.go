@@ -6,6 +6,7 @@ import (
 	"mygram/config"
 	_ "mygram/docs"
 	"mygram/handlers"
+	"mygram/middlewares"
 	"mygram/repository"
 	"mygram/service"
 	"net/http"
@@ -42,6 +43,7 @@ func main() {
 	idb := config.StartDB()
 	router := gin.Default()
 
+	router.Use(middlewares.CORS())
 	//INIT USER
 	userRepo := repository.NewUserRepository(idb)
 	userService := service.NewUserService(userRepo)
