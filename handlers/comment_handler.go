@@ -29,6 +29,16 @@ func (controller *CommentHandler) Route(route *gin.Engine) {
 
 }
 
+// @Summary      Create comment
+// @Description Create new comment
+// @Tags         Comment
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Param createCommentRequest body model.CreateCommentRequest true "Create comment body"
+// @Success 201 {object}  helpers.ApiResponse{data=model.CreateCommentResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /comments/ [post]
 func (controller *CommentHandler) CreateComment(ctx *gin.Context) {
 	var createCommentRequest model.CreateCommentRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
@@ -53,6 +63,14 @@ func (controller *CommentHandler) CreateComment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
+// @Summary      Get all comment
+// @Description Get all comment
+// @Tags         Comment
+// @Security Authorization
+// @Produce json
+// @Success 200 {object}  helpers.ApiResponse{data=[]model.GetAllCommentResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /comments/ [get]
 func (controller *CommentHandler) GetAllComment(ctx *gin.Context) {
 
 	res, errGet := controller.service.GetAllComment()
@@ -66,6 +84,17 @@ func (controller *CommentHandler) GetAllComment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
+// @Summary      Update comment
+// @Description Update comment
+// @Tags         Comment
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Param updateCommentRequest body model.UpdateCommentRequest true "Update comment body"
+// @Success 200 {object}  helpers.ApiResponse{data=model.UpdateCommentResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Param commentId path uint true "Comment Id"
+// @Router /comments/{commentId} [put]
 func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
 	var updateCommentRequest model.UpdateCommentRequest
 	ids := ctx.Param("commentId")
@@ -95,6 +124,15 @@ func (controller *CommentHandler) UpdateComment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
+// @Summary      Delete comment
+// @Description Delete comment
+// @Tags         Comment
+// @Security Authorization
+// @Produce json
+// @Success 200 {object}  helpers.ApiResponse{data=model.DeleteCommentResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Param commentId path uint true "Comment Id"
+// @Router /comments/{commentId} [delete]
 func (controller *CommentHandler) DeleteComment(ctx *gin.Context) {
 
 	ids := ctx.Param("commentId")

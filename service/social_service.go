@@ -3,9 +3,9 @@ package service
 import (
 	"errors"
 	"mygram/entity"
+	"mygram/helpers"
 	"mygram/model"
 	"mygram/repository"
-	"net/url"
 	"time"
 )
 
@@ -33,7 +33,9 @@ func (r *socialService) CreateSocial(userId uint, request *model.CreateSocialReq
 		Created_at:       time.Now(),
 	}
 
-	_, errUrl := url.ParseRequestURI(social.Social_Media_Url)
+	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Social_media_url)
+
+	social.Social_Media_Url = parsedUrl
 
 	if errUrl != nil {
 		return model.CreateSocialResponse{}, errors.New("invalid social url")
@@ -83,14 +85,14 @@ func (r *socialService) UpdateSocial(id uint, request *model.UpdateSocialRequest
 		return model.UpdateSocialResponse{}, errGet
 	}
 
-	_, errUrl := url.ParseRequestURI(request.Social_media_url)
+	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Social_media_url)
 
 	if errUrl != nil {
 		return model.UpdateSocialResponse{}, errors.New("Invalid social url")
 	}
 
 	social.Name = request.Name
-	social.Social_Media_Url = request.Social_media_url
+	social.Social_Media_Url = parsedUrl
 
 	res, errUpdate := r.repository.Update(social)
 

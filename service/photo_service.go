@@ -3,9 +3,9 @@ package service
 import (
 	"errors"
 	"mygram/entity"
+	"mygram/helpers"
 	"mygram/model"
 	"mygram/repository"
-	"net/url"
 	"path/filepath"
 	"time"
 )
@@ -48,7 +48,8 @@ func (s *photoService) AddPhoto(userId uint, request *model.AddPhotoRequest) (mo
 
 	fileExt := filepath.Ext(photo.Photo_url)
 
-	_, errUrl := url.ParseRequestURI(photo.Photo_url)
+	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Photo_url)
+	photo.Photo_url = parsedUrl
 
 	if errUrl != nil && (fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg") {
 		return model.AddPhotoResponse{}, errors.New("invalid photo url")
@@ -103,7 +104,7 @@ func (s *photoService) UpdatePhoto(id uint, request *model.UpdatePhotoRequest) (
 
 	fileExt := filepath.Ext(request.Photo_url)
 
-	_, errUrl := url.ParseRequestURI(request.Photo_url)
+	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Photo_url)
 
 	if errUrl != nil && (fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg") {
 		return model.UpdatePhotoResponse{}, errors.New("invalid photo url")
@@ -115,7 +116,7 @@ func (s *photoService) UpdatePhoto(id uint, request *model.UpdatePhotoRequest) (
 
 	photo.Title = request.Title
 	photo.Caption = request.Caption
-	photo.Photo_url = request.Photo_url
+	photo.Photo_url = parsedUrl
 	photo.Updated_at = time.Now()
 
 	photoUpdate, errUpdate := s.repository.Update(photo)

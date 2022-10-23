@@ -65,7 +65,7 @@ func (controller *UserHandler) Register(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param registerRequest body model.LoginRequest true "Login body"
-// @Success 201 {object}  helpers.ApiResponse{data=model.LoginResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=model.LoginResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /users/login [post]
 func (controller *UserHandler) Login(ctx *gin.Context) {
@@ -96,7 +96,7 @@ func (controller *UserHandler) Login(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param registerRequest body model.UpdateRequest true "Login body"
-// @Success 201 {object}  helpers.ApiResponse{data=model.UpdateResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=model.UpdateResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /users/ [put]
 func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
@@ -128,7 +128,7 @@ func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 // @Security Authorization
 // @Accept json
 // @Produce json
-// @Success 201 {object}  helpers.ApiResponse{data=model.DeleteUserResponse} "Success"
+// @Success 200 {object}  helpers.ApiResponse{data=model.DeleteUserResponse} "Success"
 // @Failure 422 {object}  helpers.ApiResponse
 // @Router /users/ [delete]
 func (controller *UserHandler) DeleteUser(ctx *gin.Context) {

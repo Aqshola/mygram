@@ -13,10 +13,156 @@ definitions:
       info:
         $ref: '#/definitions/helpers.ApiInfo'
     type: object
+  model.AddPhotoRequest:
+    properties:
+      caption:
+        maxLength: 191
+        type: string
+      photo_url:
+        maxLength: 191
+        type: string
+      title:
+        maxLength: 191
+        type: string
+    required:
+    - caption
+    - photo_url
+    - title
+    type: object
+  model.AddPhotoResponse:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.CreateCommentRequest:
+    properties:
+      message:
+        maxLength: 191
+        type: string
+      photo_id:
+        type: integer
+    required:
+    - message
+    - photo_id
+    type: object
+  model.CreateCommentResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+    type: object
+  model.CreateSocialRequest:
+    properties:
+      name:
+        maxLength: 191
+        type: string
+      social_media_url:
+        maxLength: 191
+        type: string
+    required:
+    - name
+    - social_media_url
+    type: object
+  model.CreateSocialResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.DeleteCommentResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  model.DeletePhotoResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  model.DeleteSocialResponse:
+    properties:
+      message:
+        type: string
+    type: object
   model.DeleteUserResponse:
     properties:
       message:
         type: string
+    type: object
+  model.GetAllCommentResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo:
+        $ref: '#/definitions/model.PhotoResponse'
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/model.UserResponse'
+      user_id:
+        type: integer
+    type: object
+  model.GetAllPhotoResponse:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/model.UserResponse'
+      user_id:
+        type: integer
+    type: object
+  model.GetAllSocialResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      user:
+        $ref: '#/definitions/model.UserResponse'
+      user_id:
+        type: integer
     type: object
   model.LoginRequest:
     properties:
@@ -33,6 +179,19 @@ definitions:
     properties:
       token:
         type: string
+    type: object
+  model.PhotoResponse:
+    properties:
+      caption:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
     type: object
   model.RegisterRequest:
     properties:
@@ -66,6 +225,58 @@ definitions:
       username:
         type: string
     type: object
+  model.UpdateCommentRequest:
+    properties:
+      message:
+        maxLength: 191
+        type: string
+    required:
+    - message
+    type: object
+  model.UpdateCommentResponse:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.UpdatePhotoRequest:
+    properties:
+      caption:
+        maxLength: 191
+        type: string
+      photo_url:
+        maxLength: 191
+        type: string
+      title:
+        maxLength: 191
+        type: string
+    required:
+    - caption
+    - photo_url
+    - title
+    type: object
+  model.UpdatePhotoResponse:
+    properties:
+      caption:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
   model.UpdateRequest:
     properties:
       email:
@@ -91,12 +302,421 @@ definitions:
       username:
         type: string
     type: object
+  model.UpdateSocialRequest:
+    properties:
+      name:
+        maxLength: 191
+        type: string
+      social_media_url:
+        maxLength: 191
+        type: string
+    required:
+    - name
+    - social_media_url
+    type: object
+  model.UpdateSocialResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
   title: MyGram Example API
   version: "1.0"
 paths:
+  /comments/:
+    get:
+      description: Get all comment
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.GetAllCommentResponse'
+                  type: array
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Get all comment
+      tags:
+      - Comment
+    post:
+      consumes:
+      - application/json
+      description: Create new comment
+      parameters:
+      - description: Create comment body
+        in: body
+        name: createCommentRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateCommentResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Create comment
+      tags:
+      - Comment
+  /comments/{commentId}:
+    delete:
+      description: Delete comment
+      parameters:
+      - description: Comment Id
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeleteCommentResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Delete comment
+      tags:
+      - Comment
+    put:
+      consumes:
+      - application/json
+      description: Update comment
+      parameters:
+      - description: Update comment body
+        in: body
+        name: updateCommentRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateCommentRequest'
+      - description: Comment Id
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdateCommentResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Update comment
+      tags:
+      - Comment
+  /photos/:
+    get:
+      description: Get All photo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.GetAllPhotoResponse'
+                  type: array
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Get All Photo
+      tags:
+      - Photo
+    post:
+      consumes:
+      - application/json
+      description: Add new photo
+      parameters:
+      - description: Add photo body
+        in: body
+        name: addPhotoRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddPhotoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AddPhotoResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Add new photo
+      tags:
+      - Photo
+  /photos/{photoId}:
+    delete:
+      description: Delete photo
+      parameters:
+      - description: Photo Id
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeletePhotoResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Delete photo
+      tags:
+      - Photo
+    put:
+      consumes:
+      - application/json
+      description: Update Photo
+      parameters:
+      - description: Update photo body
+        in: body
+        name: updatePhotoRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdatePhotoRequest'
+      - description: Photo Id
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdatePhotoResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Update Photo
+      tags:
+      - Photo
+  /socialmedias/:
+    get:
+      description: Get all social
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.GetAllSocialResponse'
+                  type: array
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Get all social
+      tags:
+      - Social
+    post:
+      consumes:
+      - application/json
+      description: Create new social
+      parameters:
+      - description: Create social body
+        in: body
+        name: createSocialRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateSocialRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateSocialResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Create social
+      tags:
+      - Social
+  /socialmedias/{socialMediaId}:
+    delete:
+      description: Delete social
+      parameters:
+      - description: Social media Id
+        in: path
+        name: socialMediaId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeleteSocialResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Delete social
+      tags:
+      - Social
+    put:
+      consumes:
+      - application/json
+      description: Update social
+      parameters:
+      - description: Update social body
+        in: body
+        name: updateSocialRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateSocialRequest'
+      - description: Social media Id
+        in: path
+        name: socialMediaId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdateSocialResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/helpers.ApiResponse'
+      security:
+      - Authorization: []
+      summary: Update social
+      tags:
+      - Social
   /users/:
     delete:
       consumes:
@@ -105,7 +725,7 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
+        "200":
           description: Success
           schema:
             allOf:
@@ -137,7 +757,7 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
+        "200":
           description: Success
           schema:
             allOf:
@@ -170,7 +790,7 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
+        "200":
           description: Success
           schema:
             allOf:

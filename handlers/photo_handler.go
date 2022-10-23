@@ -28,6 +28,16 @@ func (controller *PhotoHandler) Route(route *gin.Engine) {
 	photo.Use(middlewares.Authorization("photos", "photoId")).DELETE("/:photoId", controller.DeletePhoto)
 }
 
+// @Summary      Add new photo
+// @Description Add new photo
+// @Tags         Photo
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Param addPhotoRequest body model.AddPhotoRequest true "Add photo body"
+// @Success 201 {object}  helpers.ApiResponse{data=model.AddPhotoResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /photos/ [post]
 func (controller *PhotoHandler) AddPhoto(ctx *gin.Context) {
 	var addPhotoRequest model.AddPhotoRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
@@ -53,6 +63,14 @@ func (controller *PhotoHandler) AddPhoto(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, response)
 }
 
+// @Summary      Get All Photo
+// @Description Get All photo
+// @Tags         Photo
+// @Security Authorization
+// @Produce json
+// @Success 200 {object}  helpers.ApiResponse{data=[]model.GetAllPhotoResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /photos/ [get]
 func (controller *PhotoHandler) GetAllPhoto(ctx *gin.Context) {
 	res, errGet := controller.service.GetAllPhoto()
 
@@ -67,6 +85,17 @@ func (controller *PhotoHandler) GetAllPhoto(ctx *gin.Context) {
 
 }
 
+// @Summary      Update Photo
+// @Description Update Photo
+// @Tags         Photo
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Param updatePhotoRequest body model.UpdatePhotoRequest true "Update photo body"
+// @Success 200 {object}  helpers.ApiResponse{data=model.UpdatePhotoResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Param photoId path uint true "Photo Id"
+// @Router /photos/{photoId} [put]
 func (controller *PhotoHandler) UpdatePhoto(ctx *gin.Context) {
 
 	ids := ctx.Param("photoId")
@@ -99,6 +128,15 @@ func (controller *PhotoHandler) UpdatePhoto(ctx *gin.Context) {
 
 }
 
+// @Summary      Delete photo
+// @Description  Delete photo
+// @Tags         Photo
+// @Security Authorization
+// @Produce json
+// @Success 200 {object}  helpers.ApiResponse{data=model.DeletePhotoResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Param photoId path uint true "Photo Id"
+// @Router /photos/{photoId} [delete]
 func (controller *PhotoHandler) DeletePhoto(ctx *gin.Context) {
 	ids := ctx.Param("photoId")
 

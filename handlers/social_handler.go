@@ -28,6 +28,16 @@ func (controller *SocialHandler) Route(route *gin.Engine) {
 	social.Use(middlewares.Authorization("social_media", "socialMediaId")).DELETE("/:socialMediaId", controller.DeleteSocial)
 }
 
+// @Summary      Create social
+// @Description Create new social
+// @Tags         Social
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Param createSocialRequest body model.CreateSocialRequest true "Create social body"
+// @Success 201 {object}  helpers.ApiResponse{data=model.CreateSocialResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /socialmedias/ [post]
 func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
 	var createSocialRequest model.CreateSocialRequest
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
@@ -58,6 +68,15 @@ func (controller *SocialHandler) CreateSocial(ctx *gin.Context) {
 	})
 	ctx.JSON(http.StatusOK, response)
 }
+
+// @Summary      Get all social
+// @Description  Get all social
+// @Tags         Social
+// @Security Authorization
+// @Produce json
+// @Success 200 {object}  helpers.ApiResponse{data=[]model.GetAllSocialResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Router /socialmedias/ [get]
 func (controller *SocialHandler) GetAllSocial(ctx *gin.Context) {
 	userData := ctx.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
@@ -69,10 +88,21 @@ func (controller *SocialHandler) GetAllSocial(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
-	response := helpers.GenerateApiResponse(http.StatusOK, "Success get all comment", res)
+	response := helpers.GenerateApiResponse(http.StatusOK, "Success get all social", res)
 	ctx.JSON(http.StatusOK, response)
 }
 
+// @Summary      Update social
+// @Description Update social
+// @Tags         Social
+// @Security Authorization
+// @Accept json
+// @Produce json
+// @Param updateSocialRequest body model.UpdateSocialRequest true "Update social body"
+// @Success 200 {object}  helpers.ApiResponse{data=model.UpdateSocialResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Param socialMediaId path uint true "Social media Id"
+// @Router /socialmedias/{socialMediaId} [put]
 func (controller *SocialHandler) UpdateSocial(ctx *gin.Context) {
 	ids := ctx.Param("socialMediaId")
 	idconvert, errconvert := strconv.Atoi(ids)
@@ -104,6 +134,16 @@ func (controller *SocialHandler) UpdateSocial(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 
 }
+
+// @Summary      Delete social
+// @Description Delete social
+// @Tags         Social
+// @Security Authorization
+// @Produce json
+// @Success 200 {object}  helpers.ApiResponse{data=model.DeleteSocialResponse} "Success"
+// @Failure 422 {object}  helpers.ApiResponse
+// @Param socialMediaId path uint true "Social media Id"
+// @Router /socialmedias/{socialMediaId} [delete]
 func (controller *SocialHandler) DeleteSocial(ctx *gin.Context) {
 	ids := ctx.Param("socialMediaId")
 	idconvert, errconvert := strconv.Atoi(ids)
