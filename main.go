@@ -8,6 +8,7 @@ import (
 	"mygram/handlers"
 	"mygram/repository"
 	"mygram/service"
+	"net/http"
 	"os"
 
 	swaggerfiles "github.com/swaggo/files"
@@ -62,6 +63,9 @@ func main() {
 	socialHandler := handlers.NewSocialHandler(socialService)
 
 	//ROUTE
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.Redirect(http.StatusPermanentRedirect, "/swagger/index.html")
+	})
 	userHandler.Route(router)
 	photoHandler.Route(router)
 	commentHandler.Route(router)
