@@ -29,13 +29,13 @@ import (
 func main() {
 
 	PORT := "8080"
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Unable to load production env")
-	}
-
 	if os.Getenv("APP_ENV") == "production" {
 		PORT = os.Getenv("PORT")
+	} else {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Unable to load production env")
+		}
 	}
 
 	idb := config.StartDB()
