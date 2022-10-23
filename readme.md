@@ -14,9 +14,11 @@ Simple rest api, build for submission <b>Digitalent - Hacktiv8 Scalable Web Serv
 
 ## How to
 - Clone repository
-- Run ``` go run main.go```
-- Open ```localhost:8080/swagger/index.html ``` for see documentation
+- run ``` go mod tidy ```
+- Run ``` gin run --appPort 9000```
+- Open ```/swagger/index.html ``` for see documentation
 - <b>NOTE</b> when input token for Authorization in swagger, make sure use this format `Bearer YOUR_TOKEN_HERE` since current swaggo still not implemented Bearer token
+- Enjoy
 
 
 ## Framework

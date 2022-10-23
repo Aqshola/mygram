@@ -98,6 +98,17 @@ func (s *userService) UpdateUser(id uint, request *dto.UpdateRequest) (dto.Updat
 	user.Username = request.Username
 	user.Updated_at = time.Now()
 
+	usernameExist := s.repository.IsUsernameExist(user.Username)
+	emailExist := s.repository.IsEmailExist(user.Email)
+
+	if emailExist {
+		return dto.UpdateResponse{}, errors.New("Email already used")
+	}
+
+	if usernameExist {
+		return dto.UpdateResponse{}, errors.New("Username already used")
+	}
+
 	updateUser, err := s.repository.Update(user)
 	if err != nil {
 		return dto.UpdateResponse{}, err

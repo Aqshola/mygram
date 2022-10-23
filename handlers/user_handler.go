@@ -110,6 +110,7 @@ func (controller *UserHandler) UpdateUser(ctx *gin.Context) {
 	if errValid != nil {
 		response := helpers.GenerateApiResponse(http.StatusUnprocessableEntity, errValid.Error(), nil)
 		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
 	}
 
 	res, errUpdate := controller.service.UpdateUser(userId, &updateRequest)

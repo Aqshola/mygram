@@ -48,11 +48,12 @@ func (s *photoService) AddPhoto(userId uint, request *dto.AddPhotoRequest) (dto.
 
 	fileExt := filepath.Ext(photo.Photo_url)
 
-	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Photo_url)
-	photo.Photo_url = parsedUrl
-
-	if errUrl != nil && (fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg") {
-		return dto.AddPhotoResponse{}, errors.New("invalid photo url")
+	if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg" {
+		parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Photo_url)
+		photo.Photo_url = parsedUrl
+		if errUrl != nil {
+			return dto.AddPhotoResponse{}, errors.New("invalid photo url")
+		}
 	}
 
 	res, err := s.repository.Insert(&photo)
@@ -104,10 +105,13 @@ func (s *photoService) UpdatePhoto(id uint, request *dto.UpdatePhotoRequest) (dt
 
 	fileExt := filepath.Ext(request.Photo_url)
 
-	parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Photo_url)
+	if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg" {
+		parsedUrl, errUrl := helpers.ParseAndValidateUrl(request.Photo_url)
+		photo.Photo_url = parsedUrl
+		if errUrl != nil {
+			return dto.UpdatePhotoResponse{}, errors.New("invalid photo url")
+		}
 
-	if errUrl != nil && (fileExt != ".png" && fileExt != ".jpg" && fileExt != ".jpeg") {
-		return dto.UpdatePhotoResponse{}, errors.New("invalid photo url")
 	}
 
 	if errGet != nil {
@@ -116,7 +120,7 @@ func (s *photoService) UpdatePhoto(id uint, request *dto.UpdatePhotoRequest) (dt
 
 	photo.Title = request.Title
 	photo.Caption = request.Caption
-	photo.Photo_url = parsedUrl
+
 	photo.Updated_at = time.Now()
 
 	photoUpdate, errUpdate := s.repository.Update(photo)

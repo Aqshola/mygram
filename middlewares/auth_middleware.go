@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"errors"
-	"fmt"
 	"mygram/config"
 	"mygram/helpers"
 	"net/http"
@@ -82,7 +81,7 @@ func Authorization(service string, idparam string) gin.HandlerFunc {
 		}
 
 		errService := config.CallDB().Table(service).Select("user_id").Where("id = ?", uint(idconvert)).Take(&serviceUserId).Error
-		fmt.Println(serviceUserId, userId, idconvert, userId, errService)
+
 		if errService != nil && errors.Is(errService, gorm.ErrRecordNotFound) {
 			response := helpers.GenerateApiResponse(http.StatusNotFound, "Content not found", nil)
 			ctx.AbortWithStatusJSON(http.StatusNotFound, response)
