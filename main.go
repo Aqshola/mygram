@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"mygram/config"
+	"mygram/docs"
 	_ "mygram/docs"
 	"mygram/handlers"
-	"mygram/middlewares"
 	"mygram/repository"
 	"mygram/service"
 	"net/http"
@@ -21,7 +21,6 @@ import (
 
 // @title           MyGram Example API
 // @version         1.0
-// @host      localhost:8080
 // @BasePath  /
 
 // @securitydefinitions.apikey Authorization
@@ -30,7 +29,7 @@ import (
 
 func main() {
 
-	PORT := "8080"
+	PORT := "9000"
 	if os.Getenv("APP_ENV") == "production" {
 		PORT = os.Getenv("PORT")
 	} else {
@@ -40,10 +39,10 @@ func main() {
 		}
 	}
 
+	docs.SwaggerInfo.Host = "localhost:" + PORT
 	idb := config.StartDB()
 	router := gin.Default()
 
-	router.Use(middlewares.CORS())
 	//INIT USER
 	userRepo := repository.NewUserRepository(idb)
 	userService := service.NewUserService(userRepo)

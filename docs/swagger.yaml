@@ -336,7 +336,6 @@ definitions:
       info:
         $ref: '#/definitions/helpers.ApiInfo'
     type: object
-host: localhost:8080
 info:
   contact: {}
   title: MyGram Example API
